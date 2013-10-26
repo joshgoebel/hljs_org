@@ -1,4 +1,5 @@
 import os
+import sys
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 DEBUG = True
@@ -47,5 +48,7 @@ SECRET_KEY = 'l4=eul9(8$7-mo-xq=%4_z=r4mefs33izqmc8&_&lis#1v6b7&'
 
 ## Custom settings
 
-HLJS_SOURCE_DIR = '/home/maniac/code/hljs/highlight.js'
+HLJS_SOURCE = '/home/maniac/code/hljs/highlight.js'
 HLJS_CACHE = os.path.join(BASE_DIR, 'cache')
+
+sys.path.insert(0, os.path.join(HLJS_SOURCE, 'tools'))
