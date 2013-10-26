@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<title>highlight.js</title>
+
+<div id="header">
+  <h1>highlight.js</h1>
+  <p>JavaScript syntax highlighter</p>
+</div>
+
+<div id="content">
+  <div id="download">
+    <p><a href="{% url 'download' %}">Download version {{ version }}</a>
+  </div>
+  <div id="news">
+    <h2>News</h2>
+    <ol>
+      {% for item in news %}
+      <li>{{ item }}
+      {% endfor %}
+    </ol>
+  </div>
+</div>

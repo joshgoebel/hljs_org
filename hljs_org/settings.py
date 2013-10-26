@@ -1,0 +1,50 @@
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+DEBUG = True
+TEMPLATE_DEBUG = True
+ALLOWED_HOSTS = ['127.0.0.1']
+
+INSTALLED_APPS = (
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.staticfiles',
+)
+
+MIDDLEWARE_CLASSES = (
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+)
+
+ROOT_URLCONF = 'hljs_org.urls'
+WSGI_APPLICATION = 'hljs_org.wsgi.application'
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'hljs_org',
+    }
+}
+
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'UTC'
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+
+STATIC_URL = '/static/'
+
+TEMPLATE_DIRS = [
+    os.path.join(BASE_DIR, 'hljs_org', 'templates'),
+]
+
+SECRET_KEY = 'l4=eul9(8$7-mo-xq=%4_z=r4mefs33izqmc8&_&lis#1v6b7&'
+
+## Custom settings
+
+HLJS_SOURCE_DIR = '/home/maniac/code/hljs/highlight.js'
