@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<title>Download highlight.js</title>
+
+<div id="content">
+
+  <h2>Hosted</h2>
+
+  <p>A prebuilt version of highlight.js is hosted at <a href="http://api.yandex.ru/jslibs/libs.xml#highlightjs">Yandex</a> and you can just link to it directly:
+
+<pre><code>&lt;link rel="stylesheet" href="http://yandex.st/highlightjs/{{ object.version }}/styles/default.min.css"&gt;
+&lt;script src="http://yandex.st/highlightjs/{{ object.version }}/highlight.min.js"&gt;&lt;/script&gt;</code></pre>
+
+  <p>It includes commonly used languages (listed below in the download form).
+
+  <p>For available style names look into the highlight.js <a href="https://github.com/isagalaev/highlight.js/tree/master/src/styles">styles directory</a> (and don't forget to add ".min" before ".css").
+
+  <h2>Custom package</h2>
+
+  <p>You can download a custom bundle including only the languages you need.
+
+  <form action="{% url 'download' %}" method="post">
+    {% csrf_token %}
+    <p><b>Common</b>
+    <ul>
+      {% for info, filename in commons %}
+      <li><label><input type="checkbox" name="{{ filename }}" checked> {{ info.Language }}</label>
+      {% endfor %}
+    </ul>
+    <p><b>Other</b>
+    <ul>
+      {% for info, filename in others %}
+      <li><label><input type="checkbox" name="{{ filename }}"> {{ info.Language }}</label>
+      {% endfor %}
+    </ul>
+
+    <p><button type="submit">Download</button>
+  </form>
+
+  <h2>Node.js</h2>
+
+  <p>Highlight.js can be used on the server through the <a href="http://highlightjs.readthedocs.org/en/latest/api.html">API</a>. The package with all supported languages is installable from <a href="http://npmjs.org">NPM</a>:
+
+  <pre><code class="no-highlight">npm install highlight.js</code></pre>
+
+  <p>Alternatively, you can build it from the source:
+
+  <pre><code class="no-highlight">python tools/build.py -tnode</code></pre>
+
+  <h2>Source</h2>
+
+  <p><a href="https://github.com/isagalaev/highlight.js">Current source</a> is available on GitHub
+
+</div>
