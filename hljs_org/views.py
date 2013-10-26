@@ -15,7 +15,7 @@ def index(request):
     return render(request, 'index.html', {
         'version': lib.version(settings.HLJS_SOURCE),
         'snippet': models.Snippet.objects.order_by('?')[0],
-        'news': [],
+        'news': models.News.objects.order_by('-created')[:10],
     })
 
 def download(request):
