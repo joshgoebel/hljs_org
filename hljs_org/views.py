@@ -5,7 +5,7 @@ from django import http
 from django.shortcuts import render
 from django.conf import settings
 
-from hljs_org import lib
+from hljs_org import lib, models
 
 
 log = logging.getLogger('hljs_download')
@@ -14,6 +14,7 @@ log = logging.getLogger('hljs_download')
 def index(request):
     return render(request, 'index.html', {
         'version': lib.version(settings.HLJS_SOURCE),
+        'snippet': models.Snippet.objects.order_by('?')[0],
         'news': [],
     })
 
