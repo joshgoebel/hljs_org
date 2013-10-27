@@ -42,6 +42,7 @@ USE_L10N = False
 USE_TZ = True
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/var/www/hljs_org/static'
 
 TEMPLATE_DIRS = [
     os.path.join(BASE_DIR, 'hljs_org', 'templates'),
