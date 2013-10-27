@@ -9,6 +9,13 @@
 <div id="content">
   <div id="description">
     <pre id="snippet"><code>{{ snippet.code }}</code></pre>
+    <ul id="features">
+      <li>{{ counts.languages }} languages and {{ counts.styles }} styles
+      <li>use hosted or download a custom build
+      <li>works with any markup
+      <li>compatible with any js framework
+      <li>language autodetection, good for markdown
+    </ul>
   </div>
   <div id="download">
     <p><a href="{% url 'download' %}">Download version {{ version }}</a>

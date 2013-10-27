@@ -15,6 +15,13 @@ def version(path):
     match = re.search(r'Version: ([0-9\.]+)', readme)
     return match and match.group(1) or ''
 
+def counts(path):
+    return {
+        ftype: len([f for f in os.listdir(os.path.join(path, 'src', ftype)) if f.endswith(extension)])
+        for ftype, extension
+        in [('languages', '.js'), ('styles', '.css')]
+    }
+
 def buildzip(src_path, cache_path, filenames):
     result = BytesIO()
     zip = zipfile.ZipFile(result, 'w')

@@ -14,6 +14,7 @@ log = logging.getLogger('hljs_download')
 def index(request):
     return render(request, 'index.html', {
         'version': lib.version(settings.HLJS_SOURCE),
+        'counts': lib.counts(settings.HLJS_SOURCE),
         'snippet': models.Snippet.objects.order_by('?')[0],
         'news': models.News.objects.order_by('-created')[:10],
     })
