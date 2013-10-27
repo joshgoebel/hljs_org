@@ -55,3 +55,8 @@ HLJS_SOURCE = '/home/maniac/code/hljs/highlight.js'
 HLJS_CACHE = '/home/maniac/code/hljs/cache'
 
 sys.path.insert(0, os.path.join(HLJS_SOURCE, 'tools'))
+
+import logging
+logger = logging.getLogger('hljs_org')
+logger.addHandler(logging.StreamHandler())
+logger.setLevel(logging.INFO)
