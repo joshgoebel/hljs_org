@@ -29,7 +29,7 @@ h2 {
 #snippet {
   float: left; width: 22em;
   padding: 1em;
-  border: solid #AAA 1px;
+  border: solid white 1px;
   overflow: hidden;
 }
 
