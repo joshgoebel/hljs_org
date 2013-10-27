@@ -54,6 +54,15 @@ SECRET_KEY = 'l4=eul9(8$7-mo-xq=%4_z=r4mefs33izqmc8&_&lis#1v6b7&'
 
 HLJS_SOURCE = '/home/maniac/code/hljs/highlight.js'
 HLJS_CACHE = '/home/maniac/code/hljs/cache'
+HLJS_CODESTYLES = [
+    'default',
+    'solarized_dark',
+    'solarized_light',
+    'github',
+    'railscasts',
+    'monokai_sublime',
+    'mono-blue',
+]
 
 sys.path.insert(0, os.path.join(HLJS_SOURCE, 'tools'))
 

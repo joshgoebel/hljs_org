@@ -1,5 +1,6 @@
 import os
 import logging
+import random
 
 from django import http
 from django.shortcuts import render
@@ -16,6 +17,7 @@ def index(request):
         'version': lib.version(settings.HLJS_SOURCE),
         'counts': lib.counts(settings.HLJS_SOURCE),
         'snippet': models.Snippet.objects.order_by('?')[0],
+        'codestyle': 'styles/%s.css' % random.choice(settings.HLJS_CODESTYLES),
         'news': models.News.objects.order_by('-created')[:10],
     })
 
