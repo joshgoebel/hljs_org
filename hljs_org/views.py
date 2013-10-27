@@ -8,7 +8,7 @@ from django.conf import settings
 from hljs_org import lib, models
 
 
-log = logging.getLogger('hljs_download')
+downloadlog = logging.getLogger('hljs_org.download')
 
 
 def index(request):
@@ -21,8 +21,10 @@ def index(request):
 
 def download(request):
     if request.method == 'POST':
-        content = lib.buildzip(settings.HLJS_SOURCE, settings.HLJS_CACHE, request.POST.keys())
-        log.info(' '.join(sorted(request.POST.keys())))
+        languages = set(request.POST.keys())
+        languages.remove('csrfmiddlewaretoken')
+        content = lib.buildzip(settings.HLJS_SOURCE, settings.HLJS_CACHE, languages)
+        downloadlog.info(' '.join(sorted(languages)))
         response = http.HttpResponse(content, content_type='application/zip')
         response['Content-Disposition'] = 'attachment; filename=highlight.zip'
         return response

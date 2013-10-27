@@ -8,7 +8,7 @@ from django.conf import settings
 
 import build
 
-log = logging.getLogger('buildcache')
+log = logging.getLogger('hljs_org.buildcache')
 
 class Command(NoArgsCommand):
     help = 'Rebuilds compressed files cache'
