@@ -35,7 +35,10 @@ li {
 #snippet {
   float: left; width: 22em;
   padding: 1em;
-  border: solid white 1px;
+  background: #500;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #400 #700 #700 #400;
   overflow: hidden;
 }
 
