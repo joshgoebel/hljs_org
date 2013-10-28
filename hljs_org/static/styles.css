@@ -15,7 +15,8 @@ a {
 
 h2 {
   margin: 2em 0 1em 0;
-  font: bold 150%;
+  font-weight: bold;
+  font-size: 150%;
 }
 
 ul li {
@@ -35,7 +36,8 @@ ul.ui li {
 }
 
 #header h1 {
-  font: bold 250%;
+  font-weight: bold;
+  font-size: 250%;
   margin: 0;
 }
 
