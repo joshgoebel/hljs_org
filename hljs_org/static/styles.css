@@ -18,9 +18,16 @@ h2 {
   font: bold 150%;
 }
 
-li {
-  list-style: square;
-  margin: 0.25em 0 0.25em 1em; padding: 0 0 0 0.5em;
+ul li {
+  list-style-type: square;
+}
+
+ul.ui {
+  padding: 0 0 0 1em;
+}
+
+ul.ui li {
+  margin: 0.25em 0; padding: 0;
 }
 
 #header {
@@ -62,10 +69,6 @@ li {
 
 #description {
   margin-left: 28em;
-}
-
-#features {
-  margin: 0; padding: 0;
 }
 
 #download {
@@ -116,22 +119,31 @@ li {
   padding-top: 2em;
 }
 
-#news ol,
-#news li {
-  list-style: none;
+#news>ol {
   margin: 0; padding: 0;
+}
+
+#news>ol>li {
+  list-style: none;
+  margin: 2em 0; padding: 0;
 }
 
 #news li .time {
   float: left;
-  margin: 0;
-  font-size: 80%;
-  font-style: italic;
   color: #AAA;
 }
 
 #news li .text {
-  margin-left: 6em;
+  margin-left: 8em;
+}
+
+#news .text ul,
+#news .text ol {
+  padding-left: 1em;
+}
+
+#news .text li {
+  padding: 0;
 }
 
 #download-form ul {
@@ -143,8 +155,4 @@ li {
   margin: 0.2em 0; padding: 0;
   list-style: none;
   float: left; width: 24.5%;
-}
-
-#contribute-links {
-  padding: 0;
 }

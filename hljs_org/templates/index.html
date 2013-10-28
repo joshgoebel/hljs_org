@@ -16,7 +16,7 @@
     <a href="{% url 'index' %}"><pre><code>{{ snippet.code }}</code></pre></a>
   </div>
   <div id="description">
-    <ul id="features">
+    <ul id="features" class="ui">
       <li>{{ counts.languages }} languages and {{ counts.styles }} styles
           (<a href="{% static 'test.html' %}">check them out!</a>)
       <li>works server-side and in browser
@@ -37,7 +37,7 @@
     <ol>
       {% for item in news %}
       <li>
-        <p class="time">{{ item.created|date:'Y-m-d' }}
+        <div class="time">{{ item.created|date:'Y-m-d' }}</div>
         <div class="text">{{ item.html }}</div>
       {% endfor %}
     </ol>
