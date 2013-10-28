@@ -5,6 +5,7 @@ from fabric.api import env, cd, run, local, get
 env['hosts'] = ['highlightjs.org']
 SRC = '/home/maniac/code/highlight'
 CACHE = '/home/maniac/app-data/hljs_cache'
+MANAGE = '/home/maniac/hljs_org/manage.py'
 
 
 def checkout(version):
@@ -22,8 +23,8 @@ def check_version(version):
         run('grep "release = \'%s\'" docs/conf.py' % version)
 
 def publish_site():
-    run('/home/maniac/hljs_org/manage.py buildcache')
-    run('/home/maniac/hljs_org/manage.py publishtest')
+    run('%s buildcache' % MANAGE)
+    run('%s publishtest' % MANAGE)
     run('touch /etc/uwsgi/apps-available/hljs_org.ini')
 
 def publish_node():
