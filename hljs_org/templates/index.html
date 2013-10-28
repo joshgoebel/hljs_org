@@ -14,6 +14,14 @@
 <div id="content">
   <div id="snippet">
     <a href="{% url 'index' %}"><pre><code>{{ snippet.code }}</code></pre></a>
+    <script>
+      addEventListener('load', function () {
+        var snippet = document.getElementById('snippet');
+        var code = snippet.getElementsByTagName('code')[0];
+        var style = '{{ codestyle }}'.replace(/styles\/(.+)/, '$1');
+        snippet.innerHTML += '<p id="label">' + code.result.language + ' + ' + style;
+      }, false);
+    </script>
   </div>
   <div id="description">
     <ul id="features" class="ui">
