@@ -14,6 +14,11 @@ h2 {
   font: bold 150% serif;
 }
 
+li {
+  list-style: square;
+  margin: 0.25em 0 0.25em 1em; padding: 0 0 0 0.5em;
+}
+
 #header {
   padding: 5em 0 3em 0;
 }
@@ -54,11 +59,6 @@ h2 {
 
 #features {
   margin: 0; padding: 0;
-}
-
-#features li {
-  list-style: square;
-  margin: 0.25em 0 0.25em 1em; padding: 0 0 0 0.5em;
 }
 
 #download {
@@ -131,4 +131,8 @@ h2 {
   margin: 0.2em 0; padding: 0;
   list-style: none;
   float: left; width: 24.5%;
+}
+
+#contribute-links {
+  padding: 0;
 }
