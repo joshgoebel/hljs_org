@@ -109,7 +109,8 @@ li {
   padding-top: 2em;
 }
 
-#news ol {
+#news ol,
+#news li {
   list-style: none;
   margin: 0; padding: 0;
 }
