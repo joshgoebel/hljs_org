@@ -89,7 +89,7 @@ li {
 #contribute {
   position: absolute;
   top: 0; right: 0;
-  width: 16em; height: 16em;
+  width: 16em; height: 8em;
   overflow: hidden;
 }
 
