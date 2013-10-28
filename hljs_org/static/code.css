@@ -1,0 +1,13 @@
+pre {
+  margin: 2em;
+}
+
+pre code .keyword,
+pre code .title {
+  font-weight: bold;
+}
+
+pre code .string,
+pre code .value {
+  color: #F88;
+}

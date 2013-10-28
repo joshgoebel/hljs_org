@@ -33,6 +33,7 @@ def download(request):
     else:
         commons, others = lib.listlanguages(settings.HLJS_SOURCE)
         return render(request, 'download.html', {
+            'version': lib.version(settings.HLJS_SOURCE),
             'commons': commons,
             'others': others,
         })

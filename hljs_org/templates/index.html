@@ -5,12 +5,12 @@
 
 {% block codestyle %}<link rel="stylesheet" href="{% static codestyle %}">{% endblock %}
 
-{% block body %}
-<div id="header">
+{% block header %}
   <h1>highlight.js</h1>
   <p>Syntax highlighter in JavaScript</p>
-</div>
+{% endblock %}
 
+{% block content %}
 <div id="content">
   <div id="snippet">
     <a href="{% url 'index' %}"><pre><code>{{ snippet.code }}</code></pre></a>
