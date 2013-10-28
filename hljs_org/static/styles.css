@@ -92,24 +92,22 @@ ul.ui li {
 #contribute {
   position: absolute;
   top: 0; right: 0;
-  width: 16em; height: 8em;
+  width: 16em; height: 10em;
   overflow: hidden;
 }
 
 #contribute p {
-  margin: 0;
+  background: #444;
+  margin: 0; padding: 3px;  width: 16em;
+  transform: translate(50%, -50%) rotate(45deg) translate(0, 5em);
+  -webkit-transform: translate(50%, -50%) rotate(45deg) translate(0, 5em);
 }
 
 #contribute a {
   display: block;
-  background: #444;
-  margin: 0; padding: 0.2em 0; width: 16em;
-  transform: translate(50%, -50%) rotate(45deg) translate(0, 5em);
-  -webkit-transform: translate(50%, -50%) rotate(45deg) translate(0, 5em);
+  padding: 0.2em 0;
   text-align: center;
-  border-color: #555 #333 #333 #555;
-  border-width: 0.1em;
-  border-style: solid;
+  border: dashed white 1px;
   font-weight: bold;
   text-decoration: none;
 }
