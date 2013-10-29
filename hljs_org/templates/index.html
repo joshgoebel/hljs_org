@@ -18,7 +18,7 @@
       addEventListener('load', function () {
         var snippet = document.getElementById('snippet');
         var code = snippet.getElementsByTagName('code')[0];
-        var style = '{{ codestyle }}'.replace(/styles\/(.+)/, '$1');
+        var style = '{{ codestyle }}'.replace(/styles\//, '');
         snippet.title = code.result.language + ' + ' + style;
       }, false);
     </script>
