@@ -43,10 +43,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-TEMPLATE_DIRS = [
-    os.path.join(BASE_DIR, 'hljs_org', 'templates'),
-]
-
 ## Custom settings
 
 HLJS_SOURCE = '<undefined>'
