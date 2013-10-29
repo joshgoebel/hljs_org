@@ -19,7 +19,7 @@
         var snippet = document.getElementById('snippet');
         var code = snippet.getElementsByTagName('code')[0];
         var style = '{{ codestyle }}'.replace(/styles\/(.+)/, '$1');
-        snippet.innerHTML += '<p id="label">' + code.result.language + ' + ' + style;
+        snippet.title = code.result.language + ' + ' + style;
       }, false);
     </script>
   </div>
