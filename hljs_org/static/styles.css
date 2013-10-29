@@ -36,7 +36,9 @@ pre code {
 }
 
 #header {
-  padding: 5em 0 3em 0;
+  padding-top: 5em;
+  height: 5em;
+  margin-bottom: 5em;
 }
 
 #header h1 {
