@@ -52,8 +52,8 @@ pre code {
 }
 
 #snippet {
-  float: left; width: 24em;
-  padding: 0 1em;
+  float: left; width: 26em;
+  padding: 1em;
   background: #500;
   border-width: 1px;
   border-style: solid;
@@ -65,7 +65,7 @@ pre code {
 }
 
 #snippet pre {
-  margin: 1em 0;
+  margin: 0;
 }
 
 #snippet pre code {
@@ -81,7 +81,7 @@ pre code {
 }
 
 #description {
-  margin-left: 28em;
+  margin-left: 30em;
 }
 
 #features {
