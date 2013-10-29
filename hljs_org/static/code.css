@@ -11,3 +11,7 @@ pre code .string,
 pre code .value {
   color: #F88;
 }
+
+pre code .comment {
+    color: #AAA;
+}

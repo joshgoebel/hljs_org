@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
     url(r'^download/$', views.download, name='download'),
     url(r'^contribute/$', TemplateView.as_view(template_name='contribute.html'), name='contribute'),
+    url(r'^usage/$', views.usage, name='usage'),
 
     url(r'^admin/', include(admin.site.urls)),
 

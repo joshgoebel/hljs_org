@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+
+{% block title %}How to use highlight.js{% endblock %}
+
+{% block highlightinit %}
+<script>
+function findCode(pre) {
+  var node = pre.firstChild;
+  return (node.nodeName == 'CODE' && node.className) ? node : false;
+}
+
+addEventListener('load', function() {
+  Array.prototype.map.call(document.getElementsByTagName('pre'), findCode).
+    filter(Boolean).
+    forEach(function(code){hljs.highlightBlock(code, hljs.tabReplace)});
+}, false);
+</script>
+{% endblock %}
+
+{% block codestyle %}<link rel="stylesheet" href="{% static 'code.css' %}">{% endblock %}
+
+{% block header %}<h1>How to use <a href="{% url 'index' %}">highlight.js</a></h1>{% endblock %}
+
+{% block content %}{{ text }}{% endblock %}

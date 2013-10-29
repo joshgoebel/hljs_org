@@ -4,6 +4,9 @@ import re
 from io import BytesIO
 import zipfile
 
+from django.utils.html import escape
+import markdown
+
 import build
 
 
@@ -53,3 +56,24 @@ def listlanguages(src_path):
     commons = [(i, f) for i, f in languages if is_common(f)]
     others = [(i, f) for i, f in languages if not is_common(f)]
     return commons, others
+
+def readme(path):
+    try:
+        readme = open(os.path.join(path, 'README.md')).read()
+    except FileNotFoundError:
+        return ''
+    try:
+        readme = readme[readme.find('## Basic usage'):]
+        readme = readme[:readme.find('## Heuristics')]
+    except IndexError:
+        pass
+
+    def replace_code(match):
+        code = escape(match.group(2))
+        language = match.group(1)
+        if language == 'html':
+            language = 'xml'
+        return '<pre><code class="%s">%s</code></pre>' % (language, code)
+
+    readme = re.sub(r'^```(\w+)\n(.*?)\n```\n', replace_code, readme, flags=re.M | re.S)
+    return markdown.markdown(readme, safe_mode=False)

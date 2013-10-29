@@ -4,6 +4,7 @@ import random
 
 from django import http
 from django.shortcuts import render
+from django.utils.html import mark_safe
 from django.conf import settings
 
 from hljs_org import lib, models
@@ -37,3 +38,8 @@ def download(request):
             'commons': commons,
             'others': others,
         })
+
+def usage(request):
+    return render(request, 'usage.html', {
+        'text': mark_safe(lib.readme(settings.HLJS_SOURCE)),
+    })

@@ -79,8 +79,8 @@ ul.ui li {
   margin-left: 28em;
 }
 
-#download {
-  padding: 1em 0;
+#features {
+  margin-bottom: 3em;
 }
 
 #download a {
@@ -96,6 +96,10 @@ ul.ui li {
   font-weight: bold;
   font-size: 120%;
   text-shadow: black 1px 1px 2px;
+}
+
+#usage {
+  text-align: center;
 }
 
 #contribute {
