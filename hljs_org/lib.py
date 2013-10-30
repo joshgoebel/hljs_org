@@ -3,6 +3,7 @@ import sys
 import re
 from io import BytesIO
 import zipfile
+from datetime import datetime
 
 from django.utils.html import escape
 import markdown
@@ -37,7 +38,7 @@ def buildzip(src_path, cache_path, filenames):
     filenames = build.language_filenames(os.path.join(src_path, 'src'), languages)
     filenames = [os.path.join(cache_path, os.path.basename(f)) for f in filenames]
     hljs = build.glue_files(os.path.join(cache_path, 'highlight.js'), filenames, True)
-    info = zipfile.ZipInfo('highlight.pack.js')
+    info = zipfile.ZipInfo('highlight.pack.js', date_time=datetime.now().timetuple()[:6])
     info.external_attr = 0o644 << 16
     zip.writestr(info, hljs)
     zip.close()
