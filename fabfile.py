@@ -26,6 +26,7 @@ def check_version(version):
 def publish_site():
     run('%s buildcache' % MANAGE)
     run('%s publishtest' % MANAGE)
+    run('%s collectstatic --noinput' % MANAGE)
     run('touch /etc/uwsgi/apps-available/hljs_org.ini')
 
 def publish_node():
