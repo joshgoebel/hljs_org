@@ -135,6 +135,15 @@ pre code {
   padding-top: 2em;
 }
 
+#social {
+  float: right;
+  margin-top: 3em;
+}
+
+#social img {
+  padding-right: 0.5em;
+}
+
 #news>ol {
   margin: 0; padding: 0;
 }
