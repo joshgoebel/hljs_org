@@ -17,7 +17,7 @@ def index(request):
     return render(request, 'index.html', {
         'version': lib.version(settings.HLJS_SOURCE),
         'counts': lib.counts(settings.HLJS_SOURCE),
-        'snippet': models.Snippet.objects.order_by('?')[0],
+        'snippet': models.Snippet.objects.order_by('?').first(),
         'codestyle': 'styles/%s.css' % random.choice(settings.HLJS_CODESTYLES),
         'news': models.News.objects.order_by('-created')[:10],
     })
