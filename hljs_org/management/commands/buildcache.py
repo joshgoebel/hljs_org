@@ -23,4 +23,4 @@ class Command(NoArgsCommand):
         for filename in filenames:
             outputname = os.path.join(settings.HLJS_CACHE, os.path.basename(filename))
             log.info('Writing %s' % outputname)
-            open(outputname, 'w').write(build.compress_content(tools_path, build.strip_read(filename)))
+            open(outputname, 'w', encoding='utf-8').write(build.compress_content(tools_path, build.strip_read(filename)))
