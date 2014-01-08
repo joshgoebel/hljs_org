@@ -29,7 +29,7 @@ def counts(path):
 def buildzip(src_path, cache_path, filenames):
     result = BytesIO()
     zip = zipfile.ZipFile(result, 'w')
-    for filename in ['README.md', 'README.ru.md', 'classref.txt', 'LICENSE']:
+    for filename in ['README.md', 'README.ru.md', 'CHANGES.md', 'LICENSE']:
         zip.write(os.path.join(src_path, filename), filename)
     styles_path = os.path.join(src_path, 'src', 'styles')
     for filename in os.listdir(styles_path):
