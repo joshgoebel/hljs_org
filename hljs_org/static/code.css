@@ -2,16 +2,16 @@ pre {
   margin: 2em;
 }
 
-pre code .keyword,
-pre code .title {
+pre code .hljs-keyword,
+pre code .hljs-title {
   font-weight: bold;
 }
 
-pre code .string,
-pre code .value {
+pre code .hljs-string,
+pre code .hljs-value {
   color: #F88;
 }
 
-pre code .comment {
+pre code .hljs-comment {
     color: #AAA;
 }
