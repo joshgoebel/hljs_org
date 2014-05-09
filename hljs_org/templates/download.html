@@ -15,14 +15,24 @@
 
   <h2>Hosted</h2>
 
-  <p>A prebuilt version of highlight.js is hosted at <a href="http://api.yandex.ru/jslibs/libs.xml#highlightjs">Yandex</a> and you can just link to it directly:
+  {% if cdns %}
+  <p>A prebuilt version of highlight.js is hosted by following CDNs:
 
-<pre><code>&lt;link rel="stylesheet" href="http://yandex.st/highlightjs/{{ version }}/styles/default.min.css"&gt;
-&lt;script src="http://yandex.st/highlightjs/{{ version }}/highlight.min.js"&gt;&lt;/script&gt;</code></pre>
+  <div id="cdns">
+  {% for title, script_url, style_url in cdns %}
+  <h3>{{ title }}</h3>
+<pre><code>&lt;link rel="stylesheet" href="{{ style_url }}"&gt;
+&lt;script src="{{ script_url }}"&gt;&lt;/script&gt;
+</code></pre>
+  {% endfor %}
+  </div>
 
   <p>It includes commonly used languages (listed below in the download form).
 
   <p>For available style names look into the highlight.js <a href="https://github.com/isagalaev/highlight.js/tree/master/src/styles">styles directory</a> (and don't forget to add ".min" before ".css").
+  {% else %}
+  <p><i>Current version is not yet avilable on any of the CDNs. Check back soon!</i>
+  {% endif %}
 
   <h2>Custom package</h2>
 

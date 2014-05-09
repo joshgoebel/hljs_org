@@ -56,3 +56,15 @@ HLJS_CODESTYLES = [
     'monokai_sublime',
     'mono-blue',
 ]
+HLJS_CDNS = [
+    (
+        'cdnjs',
+        'http://cdnjs.cloudflare.com/ajax/libs/highlight.js/%s/highlight.min.js',
+        'http://cdnjs.cloudflare.com/ajax/libs/highlight.js/%s/styles/ascetic.min.css',
+    ),
+    (
+        'Yandex',
+        'http://yandex.st/highlightjs/%s/highlight.min.js',
+        'http://yandex.st/highlightjs/%s/styles/default.min.css',
+    ),
+]

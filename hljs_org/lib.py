@@ -4,6 +4,7 @@ import re
 from io import BytesIO
 import zipfile
 from datetime import datetime
+from urllib import request
 
 from django.utils.html import escape
 import markdown
@@ -18,6 +19,20 @@ def version(path):
         return ''
     match = re.search(r'## Version ([0-9\.]+)', readme)
     return match and match.group(1) or ''
+
+def check_cdn(url_template, version):
+    url = url_template % version
+    try:
+        status = request.urlopen(url).status
+    except request.HTTPError as e:
+        status = e.code
+    return url if status == 200 else ''
+
+def check_cdns(cdn_templates, version):
+    for title, script_url, style_url in cdn_templates:
+        script_url = check_cdn(script_url, version)
+        if script_url:
+            yield title, script_url, style_url % version
 
 def counts(path):
     return {
