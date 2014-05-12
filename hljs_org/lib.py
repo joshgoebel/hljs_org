@@ -20,19 +20,20 @@ def version(path):
     match = re.search(r'## Version ([0-9\.]+)', readme)
     return match and match.group(1) or ''
 
-def check_cdn(url_template, version):
-    url = url_template % version
+def check_cdn(url):
     try:
         status = request.urlopen(url).status
     except request.HTTPError as e:
         status = e.code
-    return url if status == 200 else ''
+    return url if status == 200 else None
 
-def check_cdns(cdn_templates, version):
+def check_cdns(cdn_templates, version, cache=None):
     for title, script_url, style_url in cdn_templates:
-        script_url = check_cdn(script_url, version)
+        script_url = script_url % version
+        style_url = style_url % version
+        script_url = cache.get(script_url) if cache else check_cdn(script_url, version)
         if script_url:
-            yield title, script_url, style_url % version
+            yield title, script_url, style_url
 
 def counts(path):
     return {

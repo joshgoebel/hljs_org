@@ -5,6 +5,7 @@ import random
 from django import http
 from django.shortcuts import render
 from django.utils.html import mark_safe
+from django.core.cache import cache
 from django.conf import settings
 
 from hljs_org import lib, models
@@ -36,7 +37,7 @@ def download(request):
         version = lib.version(settings.HLJS_SOURCE)
         return render(request, 'download.html', {
             'version': version,
-            'cdns': list(lib.check_cdns(settings.HLJS_CDNS, version)),
+            'cdns': list(lib.check_cdns(settings.HLJS_CDNS, version, cache)),
             'commons': commons,
             'others': others,
         })
