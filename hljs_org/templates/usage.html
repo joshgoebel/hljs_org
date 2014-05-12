@@ -13,7 +13,7 @@ function findCode(pre) {
 addEventListener('load', function() {
   Array.prototype.map.call(document.getElementsByTagName('pre'), findCode).
     filter(Boolean).
-    forEach(function(code){hljs.highlightBlock(code, hljs.tabReplace)});
+    forEach(function(code){hljs.highlightBlock(code);});
 }, false);
 </script>
 {% endblock %}

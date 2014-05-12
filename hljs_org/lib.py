@@ -80,16 +80,13 @@ def readme(path):
     except FileNotFoundError:
         return ''
     try:
-        readme = readme[readme.find('## Basic usage'):]
-        readme = readme[:readme.find('## Heuristics')]
+        readme = readme[readme.find('## Getting Started'):]
     except IndexError:
         pass
 
     def replace_code(match):
         code = escape(match.group(2))
         language = match.group(1)
-        if language == 'html':
-            language = 'xml'
         return '<pre><code class="%s">%s</code></pre>' % (language, code)
 
     readme = re.sub(r'^```(\w+)\n(.*?)\n```\n', replace_code, readme, flags=re.M | re.S)
