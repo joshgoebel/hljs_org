@@ -26,6 +26,7 @@ def publish_site():
     run('%s buildcache' % MANAGE)
     run('%s publishtest' % MANAGE)
     run('%s collectstatic --noinput' % MANAGE)
+    run('%s updatecdns' % MANAGE)
     run('touch /etc/uwsgi/apps-available/hljs_org.ini')
 
 def publish_node():
