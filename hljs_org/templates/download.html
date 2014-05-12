@@ -16,7 +16,7 @@
   <h2>Hosted</h2>
 
   {% if cdns %}
-  <p>A prebuilt version of highlight.js is hosted by following CDNs:
+  <p>A prebuilt version of highlight.js with {{ commons|length }} commonly used languages is hosted by following CDNs:
 
   <div id="cdns">
   {% for title, script_url, style_url in cdns %}
@@ -27,9 +27,9 @@
   {% endfor %}
   </div>
 
-  <p>It includes commonly used languages (listed below in the download form).
+  <p>You can find the list of commonly used languages below in the custom download form.
 
-  <p>For available style names look into the highlight.js <a href="https://github.com/isagalaev/highlight.js/tree/master/src/styles">styles directory</a> (and don't forget to add ".min" before ".css").
+  <p>For other available styles look into the highlight.js <a href="https://github.com/isagalaev/highlight.js/tree/master/src/styles">styles directory</a> (and don't forget to add ".min" before ".css").
   {% else %}
   <p><i>Version {{ version }} has not yet been updated on CDNs. Check back soon!</i>
   {% endif %}
