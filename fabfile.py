@@ -17,8 +17,7 @@ def checkout(version):
 def check_version(version):
     node_version = version if len(version.split('.')) >= 3 else '%s.0' % version
     with cd(SRC):
-        run('grep \'Version: %s\' README.md' % version)
-        run('grep \'Версия: %s\' README.ru.md' % version)
+        run('grep \'Version %s\' CHANGES.md' % version)
         run('grep \'"version" : "%s"\' src/package.json' % node_version)
         run('grep "version = \'%s\'" docs/conf.py' % version)
         run('grep "release = \'%s\'" docs/conf.py' % version)
