@@ -14,6 +14,8 @@ urlpatterns = patterns('',
     url(r'^contribute/$', TemplateView.as_view(template_name='contribute.html'), name='contribute'),
     url(r'^usage/$', views.usage, name='usage'),
 
+    url(r'^api/release/$', views.release, name='release'),
+
     url(r'^admin/', include(admin.site.urls)),
 
 )

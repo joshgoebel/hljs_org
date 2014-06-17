@@ -47,6 +47,7 @@ STATIC_URL = '/static/'
 
 HLJS_SOURCE = '<undefined>'
 HLJS_CACHE = '<undefined>'
+HLJS_TOUCHFILE = '<undefined>'
 HLJS_CODESTYLES = [
     'default',
     'solarized_dark',
