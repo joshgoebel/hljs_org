@@ -49,9 +49,14 @@ class Command(BaseCommand):
         call_command('collectstatic', interactive=False)
         call_command('updatecdns')
 
-        log.info('Publishing to node.js...')
-        run(['python3', 'tools/build.py', '--target', 'node'])
-        run(['npm', 'publish', 'build'])
+        log.info('Reading current published version on npm...')
+        published_version = run(['npm', 'view', 'highlight.js', 'version']).decode('utf-8').strip()
+        if published_version != node_version:
+            log.info('Publishing to npm...')
+            run(['python3', 'tools/build.py', '--target', 'node'])
+            run(['npm', 'publish', 'build'])
+        else:
+            log.info('Version %s already published on npm.' % node_version)
 
         if os.path.isfile(settings.HLJS_TOUCHFILE):
             log.info('Signaling site restart...')
