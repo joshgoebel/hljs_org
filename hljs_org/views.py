@@ -63,7 +63,7 @@ def release(request):
             version = data['release']['tag_name']
         else:
             version = '0'
-        if parse_version(version) > parse_version(lib.version(settings.HLJS_SOURCE)):
+        if parse_version(version) >= parse_version(lib.version(settings.HLJS_SOURCE)):
             result = 'Started update to version %s' % version
             subprocess.Popen(['./manage.py', 'updatehljs', version])
         else:
