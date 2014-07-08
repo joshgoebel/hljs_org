@@ -23,3 +23,19 @@ class News(models.Model):
 
     def html(self):
         return mark_safe(markdown.markdown(self.text))
+
+class Update(models.Model):
+    version = models.CharField(max_length=255)
+    started = models.DateTimeField(auto_now_add=True)
+    finished = models.DateTimeField(null=True, blank=True)
+    error = models.TextField(blank=True)
+
+    def status(self):
+        return 'in-progress' if self.finished is None else 'failed' if self.error else 'succeess'
+
+    def __str__(self):
+        return 'Update to {} at {}: {}'.format(
+            self.version,
+            self.started.strftime('%Y-%m-%d %H:%M:%S'),
+            self.status(),
+        )

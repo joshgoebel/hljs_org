@@ -1,16 +1,21 @@
 import os
+import traceback
 import subprocess
 import re
+from datetime import datetime
 import logging
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.core.management import call_command
 from django.conf import settings
 
-from hljs_org import lib
+from hljs_org import lib, models
 
 
 log = logging.getLogger('hljs_org.updatehljs')
+
+def run(args):
+    return subprocess.check_output(args, stderr=subprocess.STDOUT)
 
 class Command(BaseCommand):
     help = 'Updates the site for a new version of highlight.js library'
@@ -20,12 +25,16 @@ class Command(BaseCommand):
     # def add_arguments(self, parser):
     #     parser.add_argument('version', type=str)
 
-    def handle(self, version, **base_options):
+    def do_handle(self, version):
+        '''
+        The actual command handling extracted into a separate method to avoid
+        an extra level of indentation inside the try..except in self.handle().
+        '''
         os.chdir(settings.HLJS_SOURCE)
         log.info('Checking out version %s...' % version)
-        subprocess.check_call(['git', 'checkout', 'master'])
-        subprocess.check_call(['git', 'pull'])
-        subprocess.check_call(['git', 'checkout', version])
+        run(['git', 'checkout', 'master'])
+        run(['git', 'pull'])
+        run(['git', 'checkout', version])
 
         log.info('Checking version consistency within the source...')
         node_version = version if len(version.split('.')) >= 3 else '%s.0' % version
@@ -41,11 +50,25 @@ class Command(BaseCommand):
         call_command('updatecdns')
 
         log.info('Publishing to node.js...')
-        subprocess.check_call(['python3', 'tools/build.py', '--target', 'node'])
-        subprocess.check_call(['npm', 'publish', 'build'])
+        run(['python3', 'tools/build.py', '--target', 'node'])
+        run(['npm', 'publish', 'build'])
 
         if os.path.isfile(settings.HLJS_TOUCHFILE):
             log.info('Signaling site restart...')
             os.utime(settings.HLJS_TOUCHFILE)
 
         log.info('Update to version %s completed.' % version)
+
+    def handle(self, version, **base_options):
+        update = models.Update.objects.create(version=version)
+        try:
+            self.do_handle(version)
+        except Exception as e:
+            log.error(str(e))
+            update.error = traceback.format_exc()
+            if isinstance(e, subprocess.CalledProcessError):
+                update.error += '\n\n' + e.output.decode('utf-8')
+            raise
+        finally:
+            update.finished = datetime.now()
+            update.save()

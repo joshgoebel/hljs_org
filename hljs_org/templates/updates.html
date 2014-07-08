@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Update status{% endblock %}
+
+{% block header %}<h1>Update status</h1>{% endblock %}
+
+{% block content %}
+<div id="updates">
+  {% for update in updates %}
+  <p class="version"><b>Version {{ update.version }}</b>
+  <div class="time">
+    <p>Started: <time>{{ update.started|date:'Y-m-d H:i:s' }}</time>
+    <p>Finished: <time>{{ update.finished|date:'Y-m-d H:i:s' }}</time>
+  </div>
+  <div class="status {{ update.status }}">
+    <p>Status: <b>{{ update.status }}</b>
+    {% if update.error %}
+    <pre class="error">{{ update.error }}</pre>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+
+<script>
+  $('.status.failed b').addClass('active').each(function(i, el) {
+    var pre = $(el).parents('.status').find('.error');
+    pre.hide();
+    $(el).click(function() {
+      pre.slideToggle();
+    });
+  });
+</script>
+{% endblock %}

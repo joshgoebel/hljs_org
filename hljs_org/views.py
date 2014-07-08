@@ -6,7 +6,6 @@ import re
 import subprocess
 
 from django import http
-from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.utils.html import mark_safe
@@ -53,18 +52,22 @@ def usage(request):
     })
 
 @csrf_exempt
-@require_POST
 def release(request):
-    payload = request.read()
-    event = request.META.get('HTTP_X_GITHUB_EVENT', 'event')
-    data = json.loads(payload.decode('utf-8'))
-    if event == 'push':
-        match = re.match(r'refs/tags/(\d+(\.\d+)+)', data['ref'])
-        version = match.group(1) if match else '-'
-    elif event == 'release':
-        version = data['release']['tag_name']
+    if request.method == 'POST':
+        payload = request.read()
+        event = request.META.get('HTTP_X_GITHUB_EVENT', 'event')
+        data = json.loads(payload.decode('utf-8'))
+        if event == 'push':
+            match = re.match(r'refs/tags/(\d+(\.\d+)+)', data['ref'])
+            version = match.group(1) if match else '-'
+        elif event == 'release':
+            version = data['release']['tag_name']
+        else:
+            version = '0'
+        if parse_version(version) > parse_version(lib.version(settings.HLJS_SOURCE)):
+            subprocess.Popen(['./manage.py', 'updatehljs', version])
+        return http.HttpResponse('OK', content_type='text/plain')
     else:
-        version = '0'
-    if parse_version(version) > parse_version(lib.version(settings.HLJS_SOURCE)):
-        subprocess.Popen(['./manage.py', 'updatehljs', version])
-    return http.HttpResponse('OK')
+        return render(request, 'updates.html', {
+            'updates': models.Update.objects.order_by('-started'),
+        })

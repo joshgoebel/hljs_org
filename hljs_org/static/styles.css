@@ -181,3 +181,36 @@ pre code {
   list-style: none;
   float: left; width: 24.5%;
 }
+
+#updates .version {
+  float: left; width: 8em;
+  margin-top: 0;
+}
+
+#updates .time {
+  margin-left: 8em;
+}
+
+#updates .time p {
+  color: #AAA;
+  font-size: smaller;
+  margin: 0.1em 0;
+}
+
+#updates .status {
+  margin-left: 8em;
+}
+
+#updates .active {
+  border-bottom: dotted 1px;
+  cursor: pointer;
+}
+
+#updates .error {
+  padding: 1em;
+  background: #500;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #400 #700 #700 #400;
+  overflow-x: auto;
+}
