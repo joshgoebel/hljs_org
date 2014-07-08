@@ -5,6 +5,7 @@ from io import BytesIO
 import zipfile
 from datetime import datetime
 from urllib import request
+from codecs import open
 
 from django.utils.html import escape
 import markdown
@@ -14,7 +15,7 @@ import build
 
 def version(path):
     try:
-        readme = open(os.path.join(path, 'CHANGES.md')).read()
+        readme = open(os.path.join(path, 'CHANGES.md'), encoding='utf-8').read()
     except FileNotFoundError:
         return ''
     match = re.search(r'## Version ([0-9\.]+)', readme)
@@ -76,7 +77,7 @@ def listlanguages(src_path):
 
 def readme(path):
     try:
-        readme = open(os.path.join(path, 'README.md')).read()
+        readme = open(os.path.join(path, 'README.md'), encoding='utf-8').read()
     except FileNotFoundError:
         return ''
     try:
