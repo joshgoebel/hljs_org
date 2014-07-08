@@ -54,9 +54,8 @@ def usage(request):
 @csrf_exempt
 def release(request):
     if request.method == 'POST':
-        payload = request.read()
+        data = json.loads(request.read().decode('utf-8'))
         event = request.META.get('HTTP_X_GITHUB_EVENT', 'event')
-        data = json.loads(payload.decode('utf-8'))
         if event == 'push':
             match = re.match(r'refs/tags/(\d+(\.\d+)+)', data['ref'])
             version = match.group(1) if match else '-'
