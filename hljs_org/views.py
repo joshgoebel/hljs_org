@@ -64,8 +64,11 @@ def release(request):
         else:
             version = '0'
         if parse_version(version) > parse_version(lib.version(settings.HLJS_SOURCE)):
+            result = 'Started update to version %s' % version
             subprocess.Popen(['./manage.py', 'updatehljs', version])
-        return http.HttpResponse('OK', content_type='text/plain')
+        else:
+            result = 'No update started for version "%s"' % version
+        return http.HttpResponse(result, content_type='text/plain')
     else:
         return render(request, 'updates.html', {
             'updates': models.Update.objects.order_by('-started'),
