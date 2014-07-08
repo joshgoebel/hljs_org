@@ -50,13 +50,14 @@ class Command(BaseCommand):
         call_command('updatecdns')
 
         log.info('Reading current published version on npm...')
-        published_version = run(['npm', 'view', 'highlight.js', 'version']).decode('utf-8').strip()
+        lines = run(['npm', 'view', 'highlight.js', 'version']).decode('utf-8').splitlines()
+        lines = [l for l in lines if l and not l.startswith('npm')]
+        published_version = lines[0]
+        log.info('Published version is %s' % published_version)
         if published_version != node_version:
-            log.info('Publishing to npm...')
+            log.info('Publishing version %s to npm...' % node_version)
             run(['python3', 'tools/build.py', '--target', 'node'])
             run(['npm', 'publish', 'build'])
-        else:
-            log.info('Version %s already published on npm.' % node_version)
 
         if os.path.isfile(settings.HLJS_TOUCHFILE):
             log.info('Signaling site restart...')
