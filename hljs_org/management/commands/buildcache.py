@@ -3,19 +3,18 @@ import sys
 import os
 import logging
 
-from django.core.management.base import NoArgsCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.conf import settings
 
 import build
 
 log = logging.getLogger('hljs_org.buildcache')
 
-class Command(NoArgsCommand):
+class Command(BaseCommand):
     help = 'Rebuilds compressed files cache'
+    requires_system_checks = False
 
-    requires_model_validation = False
-
-    def handle(self, **base_options):
+    def handle(self, *args, **options):
         tools_path = os.path.join(settings.HLJS_SOURCE, 'tools')
         src_path = os.path.join(settings.HLJS_SOURCE, 'src')
         filenames = build.language_filenames(src_path, [])

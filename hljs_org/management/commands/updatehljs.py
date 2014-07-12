@@ -19,11 +19,10 @@ def run(args):
 
 class Command(BaseCommand):
     help = 'Updates the site for a new version of highlight.js library'
+    requires_system_checks = False
 
-    requires_model_validation = False
-
-    # def add_arguments(self, parser):
-    #     parser.add_argument('version', type=str)
+    def add_arguments(self, parser):
+        parser.add_argument('version', type=str)
 
     def do_handle(self, version):
         '''
@@ -65,7 +64,7 @@ class Command(BaseCommand):
 
         log.info('Update to version %s completed.' % version)
 
-    def handle(self, version, **base_options):
+    def handle(self, version, **options):
         update = models.Update.objects.create(version=version)
         try:
             self.do_handle(version)

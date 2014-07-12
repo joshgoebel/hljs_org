@@ -3,7 +3,7 @@ import os
 import shutil
 import logging
 
-from django.core.management.base import NoArgsCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.conf import settings
 
 import build
@@ -11,12 +11,11 @@ import build
 log = logging.getLogger('hljs_org.publishtest')
 
 
-class Command(NoArgsCommand):
+class Command(BaseCommand):
     help = 'Publishes test.html on the Web. This requires up to date cache for building highlight.pack.js'
+    requires_system_check = False
 
-    requires_model_validation = False
-
-    def handle(self, **base_options):
+    def handle(self, *args, **options):
         src_path = os.path.join(settings.HLJS_SOURCE, 'src')
         log.info('Source path: %s' % src_path)
         log.info('Destination path: %s' % settings.STATIC_ROOT)
