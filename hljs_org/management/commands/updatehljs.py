@@ -2,11 +2,11 @@ import os
 import traceback
 import subprocess
 import re
-from datetime import datetime
 import logging
 
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
+from django.utils import timezone
 from django.conf import settings
 
 from hljs_org import lib, models
@@ -75,5 +75,5 @@ class Command(BaseCommand):
                 update.error += '\n\n' + e.output.decode('utf-8')
             raise
         finally:
-            update.finished = datetime.now()
+            update.finished = timezone.now()
             update.save()
