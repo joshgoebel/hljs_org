@@ -22,7 +22,6 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        print(options['expire'])
         version = lib.version(settings.HLJS_SOURCE)
         for title, script_url, style_url in settings.HLJS_CDNS:
             script_url = script_url % version
