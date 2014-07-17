@@ -7,7 +7,7 @@ import subprocess
 
 from django import http
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render
+from django.shortcuts import render, resolve_url
 from django.utils.html import mark_safe
 from django.core.cache import cache
 from django.conf import settings
@@ -64,11 +64,16 @@ def release(request):
         else:
             version = '0'
         if parse_version(version) >= parse_version(lib.version(settings.HLJS_SOURCE)):
-            result = 'Started update to version %s' % version
+            result = 'Started update to version %s. Watch progress at %s.\n' % (
+                version,
+                request.build_absolute_uri(resolve_url(release)),
+            )
+            status = 202
             subprocess.Popen(['./manage.py', 'updatehljs', version])
         else:
-            result = 'No update started for version "%s"' % version
-        return http.HttpResponse(result, content_type='text/plain')
+            result = 'No update started for version %s.\n' % version
+            status = 200
+        return http.HttpResponse(result, status=status, content_type='text/plain')
     else:
         return render(request, 'updates.html', {
             'updates': models.Update.objects.order_by('-started'),
