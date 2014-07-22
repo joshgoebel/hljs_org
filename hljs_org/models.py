@@ -12,6 +12,7 @@ class Snippet(models.Model):
 class News(models.Model):
     text = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
+    for_version = models.CharField(max_length=255, default='', blank=True)
 
     class Meta:
         ordering = ['-created']
