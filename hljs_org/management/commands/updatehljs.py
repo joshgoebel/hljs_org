@@ -24,7 +24,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('version', type=str)
 
-    def do_handle(self, version):
+    def _handle(self, version):
         '''
         The actual command handling extracted into a separate method to avoid
         an extra level of indentation inside the try..except in self.handle().
@@ -67,7 +67,7 @@ class Command(BaseCommand):
     def handle(self, version, **options):
         update = models.Update.objects.create(version=version)
         try:
-            self.do_handle(version)
+            self._handle(version)
         except Exception as e:
             log.error(str(e))
             update.error = traceback.format_exc()
