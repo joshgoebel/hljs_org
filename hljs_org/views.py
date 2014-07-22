@@ -19,11 +19,13 @@ from hljs_org import lib, models
 downloadlog = logging.getLogger('hljs_org.download')
 
 def index(request):
+    pk = request.GET.get('snippet')
+    snippets = models.Snippet.objects.filter(pk=pk) if pk else models.Snippet.objects.order_by('?')
     return render(request, 'index.html', {
         'version': lib.version(settings.HLJS_SOURCE),
         'counts': lib.counts(settings.HLJS_SOURCE),
-        'snippet': models.Snippet.objects.order_by('?').first(),
-        'codestyle': 'styles/%s.css' % random.choice(settings.HLJS_CODESTYLES),
+        'snippet': snippets.first(),
+        'codestyle': request.GET.get('codestyle', random.choice(settings.HLJS_CODESTYLES)),
         'news': models.News.objects.order_by('-created')[:10],
     })
 

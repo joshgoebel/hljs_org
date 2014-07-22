@@ -3,7 +3,16 @@
 
 {% block title %}highlight.js{% endblock %}
 
-{% block codestyle %}<link rel="stylesheet" href="{% static codestyle %}">{% endblock %}
+{% block codestyle %}<link rel="stylesheet" href="{% static 'styles/' %}{{ codestyle }}.css">{% endblock %}
+{% block highlightinit %}
+<script>
+  $(document).ready(function(){
+    hljs.initHighlighting();
+    var language = $('#snippet pre code').get(0).result.language;
+    $('a#language-link').html($('#snippet pre code').get(0).result.language);
+  });
+</script>
+{% endblock %}
 
 {% block header %}
   <h1>highlight.js</h1>
@@ -13,15 +22,11 @@
 {% block content %}
 <div id="content">
   <div id="snippet">
-    <a href="{% url 'index' %}"><pre><code>{{ snippet.code }}</code></pre></a>
-    <script>
-      addEventListener('load', function () {
-        var snippet = document.getElementById('snippet');
-        var code = snippet.getElementsByTagName('code')[0];
-        var style = '{{ codestyle }}'.replace(/styles\//, '');
-        snippet.title = code.result.language + ' + ' + style;
-      }, false);
-    </script>
+    <pre><code>{{ snippet.code }}</code></pre>
+    <div id="control">
+      language: <a id="language-link" href="{% url 'index' %}?codestyle={{ codestyle }}">{{ snippet.pk }}</a>
+      style: <a id="style-link" href="{% url 'index' %}?snippet={{ snippet.pk }}">{{ codestyle }}</a>
+    </div>
   </div>
   <div id="description">
     <ul id="features" class="ui">
