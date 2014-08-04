@@ -37,40 +37,38 @@
 {% endblock %}
 
 {% block content %}
-<div id="content">
-  <div id="snippet">
-  {% include 'snippet.html' %}
+<div id="snippet">
+{% include 'snippet.html' %}
+</div>
+<div id="description">
+  <ul id="features" class="ui">
+    <li>{{ counts.languages }} languages and {{ counts.styles }} styles
+        (<a href="{% static 'test.html' %}">live demo</a>)
+    <li>automatic language detection
+    <li>multi-language code highlighting
+    <li>available for node.js
+    <li>works with any markup
+    <li>compatible with any js framework
+  </ul>
+  <div id="download">
+    <p><a href="{% url 'download' %}">Get version {{ version }}</a>
   </div>
-  <div id="description">
-    <ul id="features" class="ui">
-      <li>{{ counts.languages }} languages and {{ counts.styles }} styles
-          (<a href="{% static 'test.html' %}">live demo</a>)
-      <li>automatic language detection
-      <li>multi-language code highlighting
-      <li>available for node.js
-      <li>works with any markup
-      <li>compatible with any js framework
-    </ul>
-    <div id="download">
-      <p><a href="{% url 'download' %}">Get version {{ version }}</a>
-    </div>
-    <p id="usage"><a href="{% url 'usage' %}">Usage</a>
+  <p id="usage"><a href="{% url 'usage' %}">Usage</a>
+</div>
+<div id="contribute">
+  <p><a href="{% url 'contribute' %}">Contribute</a>
+</div>
+<div id="news">
+  <div id="social">
+    <p><a href="https://twitter.com/highlightjs"><img src="{% static 'twitter.png' %}">@highlightjs</a>
   </div>
-  <div id="contribute">
-    <p><a href="{% url 'contribute' %}">Contribute</a>
-  </div>
-  <div id="news">
-    <div id="social">
-      <p><a href="https://twitter.com/highlightjs"><img src="{% static 'twitter.png' %}">@highlightjs</a>
-    </div>
-    <h2>News</h2>
-    <ol>
-      {% for item in news %}
-      <li>
-        <div class="time">{{ item.created|date:'Y-m-d' }}</div>
-        <div class="text">{{ item.html }}</div>
-      {% endfor %}
-    </ol>
-  </div>
+  <h2>News</h2>
+  <ol>
+    {% for item in news %}
+    <li>
+      <div class="time">{{ item.created|date:'Y-m-d' }}</div>
+      <div class="text">{{ item.html }}</div>
+    {% endfor %}
+  </ol>
 </div>
 {% endblock %}
