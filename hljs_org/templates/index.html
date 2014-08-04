@@ -3,13 +3,20 @@
 
 {% block title %}highlight.js{% endblock %}
 
-{% block codestyle %}<link id="codestyle" rel="stylesheet" href="{% static 'styles/' %}{{ style }}.css">{% endblock %}
+{% block codestyle %}
+{% for s in styles %}<link class="codestyle" rel="{% if s != style %}alternate {% endif %}stylesheet" href="{% static 'styles/' %}{{ s }}.css">
+{% endfor %}
+{% endblock %}
 {% block highlightinit %}
 <script>
   function initSnippet() {
     var snippet = $('#snippet pre code');
     hljs.highlightBlock(snippet.get(0));
-    $('#codestyle').attr('href', '{% static "styles/" %}' + $('#style-link').text() + '.css');
+    var style = $('#style-link').text();
+    $('.codestyle').each(function(i, e) {
+      e.rel = 'stylesheet';
+      e.disabled = !e.href.match(style + '\\.css$');
+    });
     $('#language-link').html(snippet.get(0).result.language);
     $('#control a').click(function(e) {
       e.preventDefault();

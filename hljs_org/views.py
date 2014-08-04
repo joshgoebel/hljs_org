@@ -37,6 +37,7 @@ def index(request):
         'snippet': snippets[snippet_current],
         'snippet_current': snippet_current,
         'snippet_next': snippet_next,
+        'styles': styles,
         'style': styles[style_current],
         'style_current': style_current,
         'style_next': style_next,
