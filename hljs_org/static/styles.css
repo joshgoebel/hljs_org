@@ -60,10 +60,6 @@ pre code {
   border-color: #400 #700 #700 #400;
 }
 
-#snippet a {
-  text-decoration: none;
-}
-
 #snippet pre {
   margin: 0;
 }
@@ -72,6 +68,11 @@ pre code {
   display: block;
   height: 16em; padding: 1em;
   overflow-y: auto; overflow-x: hidden;
+}
+
+#control p {
+  display: inline-block;
+  width: 11em; margin: 0.5em 0 0 0;
 }
 
 #label {
