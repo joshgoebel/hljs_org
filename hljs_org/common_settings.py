@@ -56,6 +56,7 @@ HLJS_CODESTYLES = [
     'railscasts',
     'monokai_sublime',
     'mono-blue',
+    'tomorrow',
 ]
 HLJS_CDNS = [
     (
