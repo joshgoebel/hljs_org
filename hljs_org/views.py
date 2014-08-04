@@ -18,15 +18,28 @@ from hljs_org import lib, models
 
 downloadlog = logging.getLogger('hljs_org.download')
 
+def curnext(items, index):
+    if index is None:
+        index = random.randrange(0, len(items))
+    else:
+        index = int(index)
+    return index, (index + 1) % len(items)
+
 def index(request):
-    pk = request.GET.get('snippet')
-    snippets = models.Snippet.objects.filter(pk=pk) if pk else models.Snippet.objects.order_by('?')
+    snippets = models.Snippet.objects.order_by('pk')
+    snippet_current, snippet_next = curnext(snippets, request.GET.get('snippet'))
+    styles = settings.HLJS_CODESTYLES
+    style_current, style_next = curnext(styles, request.GET.get('style'))
     template_name = 'snippet.html' if request.is_ajax() else 'index.html'
     return render(request, template_name, {
         'version': lib.version(settings.HLJS_SOURCE),
         'counts': lib.counts(settings.HLJS_SOURCE),
-        'snippet': snippets.first(),
-        'codestyle': request.GET.get('codestyle', random.choice(settings.HLJS_CODESTYLES)),
+        'snippet': snippets[snippet_current],
+        'snippet_current': snippet_current,
+        'snippet_next': snippet_next,
+        'style': styles[style_current],
+        'style_current': style_current,
+        'style_next': style_next,
         'news': models.News.objects.order_by('-created')[:10],
     })
 
