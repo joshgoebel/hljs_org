@@ -24,7 +24,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('version', type=str)
 
-    def do_handle(self, version):
+    def _handle(self, version):
         '''
         The actual command handling extracted into a separate method to avoid
         an extra level of indentation inside the try..except in self.handle().
@@ -48,6 +48,13 @@ class Command(BaseCommand):
         call_command('collectstatic', interactive=False)
         call_command('updatecdns')
 
+        if not models.News.objects.filter(for_version=version).exists():
+            log.info('Adding news entry...')
+            models.News.objects.create(
+                text=lib.news(settings.HLJS_SOURCE, version),
+                for_version=version,
+            )
+
         log.info('Reading current published version on npm...')
         lines = run(['npm', 'view', 'highlight.js', 'version']).decode('utf-8').splitlines()
         lines = [l for l in lines if l and not l.startswith('npm')]
@@ -67,7 +74,7 @@ class Command(BaseCommand):
     def handle(self, version, **options):
         update = models.Update.objects.create(version=version)
         try:
-            self.do_handle(version)
+            self._handle(version)
         except Exception as e:
             log.error(str(e))
             update.error = traceback.format_exc()

@@ -52,7 +52,7 @@ pre code {
 }
 
 #snippet {
-  float: left; width: 26em;
+  float: left; width: 28em;
   padding: 1em;
   background: #500;
   border-width: 1px;
@@ -70,8 +70,8 @@ pre code {
 
 #snippet pre code {
   display: block;
-  padding: 1em;
-  overflow: hidden;
+  height: 16em; padding: 1em;
+  overflow-y: auto; overflow-x: hidden;
 }
 
 #label {
@@ -81,7 +81,7 @@ pre code {
 }
 
 #description {
-  margin-left: 30em;
+  margin-left: 32em;
 }
 
 #features {

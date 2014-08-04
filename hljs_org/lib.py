@@ -18,8 +18,23 @@ def version(path):
         readme = open(os.path.join(path, 'CHANGES.md'), encoding='utf-8').read()
     except FileNotFoundError:
         return ''
-    match = re.search(r'## Version ([0-9\.]+)', readme)
+    match = re.search(r'^## Version ([0-9\.]+)', readme, re.M)
     return match and match.group(1) or ''
+
+def news(path, version):
+    try:
+        readme = open(os.path.join(path, 'CHANGES.md'), encoding='utf-8').read()
+    except FileNotFoundError:
+        return ''
+    match = re.search(r'^## Version (%s).*?\n+' % re.escape(version), readme, re.M)
+    if not match:
+        return ''
+    header = readme[match.start() + 3:match.end()]
+    readme = readme[match.end():]
+    match = re.search(r'^## ', readme, re.M)
+    if match:
+        readme = readme[:match.start()]
+    return header + readme.strip()
 
 def check_cdn(url):
     try:
