@@ -21,12 +21,15 @@ downloadlog = logging.getLogger('hljs_org.download')
 def curnext(items, index):
     if index is None:
         index = random.randrange(0, len(items))
-    else:
+    try:
         index = int(index)
+        items[index]
+    except (ValueError, IndexError):
+        raise http.Http404
     return index, (index + 1) % len(items)
 
 def index(request):
-    snippets = models.Snippet.objects.order_by('pk')
+    snippets = list(models.Snippet.objects.order_by('pk'))
     snippet_current, snippet_next = curnext(snippets, request.GET.get('snippet'))
     styles = settings.HLJS_CODESTYLES
     style_current, style_next = curnext(styles, request.GET.get('style'))
