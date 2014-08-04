@@ -3,7 +3,33 @@
 
 {% block title %}highlight.js{% endblock %}
 
-{% block codestyle %}<link rel="stylesheet" href="{% static codestyle %}">{% endblock %}
+{% block codestyle %}
+{% for s in styles %}<link class="codestyle" rel="{% if s != style %}alternate {% endif %}stylesheet" href="{% static 'styles/' %}{{ s }}.css">
+{% endfor %}
+{% endblock %}
+{% block highlightinit %}
+<script>
+  function initSnippet() {
+    var snippet = $('#snippet pre code');
+    hljs.highlightBlock(snippet.get(0));
+    var style = $('#style-link').text();
+    $('.codestyle').each(function(i, e) {
+      e.rel = 'stylesheet';
+      e.disabled = !e.href.match(style + '\\.css$');
+    });
+    $('#language-link').html(snippet.get(0).result.language);
+    $('#control a').click(function(e) {
+      e.preventDefault();
+      $('#snippet').load(this.href, initSnippet);
+    });
+  }
+
+  $(document).ready(function(){
+    // hljs.initHighlighting();
+    initSnippet();
+  });
+</script>
+{% endblock %}
 
 {% block header %}
   <h1>highlight.js</h1>
@@ -13,15 +39,7 @@
 {% block content %}
 <div id="content">
   <div id="snippet">
-    <a href="{% url 'index' %}"><pre><code>{{ snippet.code }}</code></pre></a>
-    <script>
-      addEventListener('load', function () {
-        var snippet = document.getElementById('snippet');
-        var code = snippet.getElementsByTagName('code')[0];
-        var style = '{{ codestyle }}'.replace(/styles\//, '');
-        snippet.title = code.result.language + ' + ' + style;
-      }, false);
-    </script>
+  {% include 'snippet.html' %}
   </div>
   <div id="description">
     <ul id="features" class="ui">
