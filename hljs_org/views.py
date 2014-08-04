@@ -21,7 +21,8 @@ downloadlog = logging.getLogger('hljs_org.download')
 def index(request):
     pk = request.GET.get('snippet')
     snippets = models.Snippet.objects.filter(pk=pk) if pk else models.Snippet.objects.order_by('?')
-    return render(request, 'index.html', {
+    template_name = 'snippet.html' if request.is_ajax() else 'index.html'
+    return render(request, template_name, {
         'version': lib.version(settings.HLJS_SOURCE),
         'counts': lib.counts(settings.HLJS_SOURCE),
         'snippet': snippets.first(),

@@ -3,13 +3,23 @@
 
 {% block title %}highlight.js{% endblock %}
 
-{% block codestyle %}<link rel="stylesheet" href="{% static 'styles/' %}{{ codestyle }}.css">{% endblock %}
+{% block codestyle %}<link id="codestyle" rel="stylesheet" href="{% static 'styles/' %}{{ codestyle }}.css">{% endblock %}
 {% block highlightinit %}
 <script>
+  function initSnippet() {
+    var snippet = $('#snippet pre code');
+    hljs.highlightBlock(snippet.get(0));
+    $('#codestyle').attr('href', '{% static "styles/" %}' + $('#style-link').text() + '.css');
+    $('#language-link').html(snippet.get(0).result.language);
+    $('#control a').click(function(e) {
+      e.preventDefault();
+      $('#snippet').load(this.href, initSnippet);
+    });
+  }
+
   $(document).ready(function(){
-    hljs.initHighlighting();
-    var language = $('#snippet pre code').get(0).result.language;
-    $('a#language-link').html($('#snippet pre code').get(0).result.language);
+    // hljs.initHighlighting();
+    initSnippet();
   });
 </script>
 {% endblock %}
@@ -22,11 +32,7 @@
 {% block content %}
 <div id="content">
   <div id="snippet">
-    <pre><code>{{ snippet.code }}</code></pre>
-    <div id="control">
-      language: <a id="language-link" href="{% url 'index' %}?codestyle={{ codestyle }}">{{ snippet.pk }}</a>
-      style: <a id="style-link" href="{% url 'index' %}?snippet={{ snippet.pk }}">{{ codestyle }}</a>
-    </div>
+  {% include 'snippet.html' %}
   </div>
   <div id="description">
     <ul id="features" class="ui">
