@@ -48,12 +48,13 @@ class Command(BaseCommand):
         call_command('collectstatic', interactive=False)
         call_command('updatecdns')
 
-        if not models.News.objects.filter(for_version=version).exists():
-            log.info('Adding news entry...')
-            models.News.objects.create(
-                text=lib.news(settings.HLJS_SOURCE, version),
-                for_version=version,
-            )
+        log.info('Updating news entry...')
+        models.News.objects.update_or_create(
+            defaults={
+                'text': lib.news(settings.HLJS_SOURCE, version),
+            },
+            for_version=version,
+        )
 
         log.info('Reading current published version on npm...')
         lines = run(['npm', 'view', 'highlight.js', 'version']).decode('utf-8').splitlines()
