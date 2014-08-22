@@ -57,6 +57,8 @@ HLJS_CODESTYLES = [
     'monokai_sublime',
     'mono-blue',
     'tomorrow',
+    'color-brewer',
+    'zenburn',
 ]
 HLJS_CDNS = [
     (
