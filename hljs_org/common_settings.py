@@ -46,6 +46,7 @@ STATIC_URL = '/static/'
 ## Custom settings
 
 HLJS_SOURCE = '<undefined>'
+HLJS_CDN_SOURCE = '<undefined>'
 HLJS_CACHE = '<undefined>'
 HLJS_TOUCHFILE = '<undefined>'
 HLJS_CODESTYLES = [
