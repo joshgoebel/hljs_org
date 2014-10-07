@@ -3,6 +3,7 @@ import traceback
 import subprocess
 import re
 import logging
+import shutil
 
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
@@ -43,7 +44,13 @@ class Command(BaseCommand):
         assert re.search('version = \'%s\'' % version, conf) is not None
         assert re.search('release = \'%s\'' % version, conf) is not None
 
-        call_command('buildcache')
+        log.info('Building CDN build to populate cache...')
+        run(['python3', 'tools/build.py', '--target', 'cdn', 'none'])
+        log.info('Moving CDN build over to %s' % settings.HLJS_CACHE)
+        if os.path.exists(settings.HLJS_CACHE):
+            shutil.rmtree(settings.HLJS_CACHE)
+        shutil.move(os.path.join('build'), settings.HLJS_CACHE)
+
         call_command('publishtest')
         call_command('collectstatic', interactive=False)
         call_command('updatecdns')

@@ -10,8 +10,6 @@ from codecs import open
 from django.utils.html import escape
 import markdown
 
-import build
-
 
 def version(path):
     try:
@@ -58,6 +56,16 @@ def counts(path):
         in [('languages', '.js'), ('styles', '.css')]
     }
 
+def parse_header(filename):
+    content = open(filename, encoding='utf-8').read(1024)
+    match = re.search(r'^\s*/\*(.*?)\*/', content, re.S)
+    if not match:
+        return
+    headers = match.group(1).split('\n')
+    headers = dict(h.strip().split(': ') for h in headers if ': ' in h)
+    headers['Categories'] = [c.strip() for c in headers.get('Categories', '').split(',')]
+    return headers if 'Language' in headers else None
+
 def buildzip(src_path, cache_path, filenames):
     result = BytesIO()
     zip = zipfile.ZipFile(result, 'w')
@@ -66,10 +74,12 @@ def buildzip(src_path, cache_path, filenames):
     styles_path = os.path.join(src_path, 'src', 'styles')
     for filename in os.listdir(styles_path):
         zip.write(os.path.join(styles_path, filename), 'styles/%s' % filename)
-    languages = [os.path.splitext(f)[0] for f in filenames]
-    filenames = build.language_filenames(os.path.join(src_path, 'src'), languages)
-    filenames = [os.path.join(cache_path, os.path.basename(f)) for f in filenames]
-    hljs = build.glue_files(os.path.join(cache_path, 'highlight.js'), filenames, True)
+    filenames = [os.path.join(cache_path, 'languages', f.replace('.js', '.min.js')) for f in filenames]
+    filenames = [f for f in filenames if os.path.exists(f)]
+    hljs = ''.join(
+        open(f, encoding='utf-8').read()
+        for f in [os.path.join(cache_path, 'highlight.min.js')] + filenames
+    )
     info = zipfile.ZipInfo('highlight.pack.js', date_time=datetime.now().timetuple()[:6])
     info.external_attr = 0o644 << 16
     zip.writestr(info, hljs)
@@ -80,14 +90,10 @@ def buildzip(src_path, cache_path, filenames):
 def listlanguages(src_path):
     lang_path = os.path.join(src_path, 'src', 'languages')
     filenames = os.listdir(lang_path)
-    languages = [(build.parse_header(os.path.join(lang_path, f)), f) for f in filenames]
+    languages = [(parse_header(os.path.join(lang_path, f)), f) for f in filenames]
     languages.sort(key=lambda l: l[0]['Language'])
-
-    def is_common(f):
-        return os.path.splitext(f)[0] in build.CATEGORIES['common']
-
-    commons = [(i, f) for i, f in languages if is_common(f)]
-    others = [(i, f) for i, f in languages if not is_common(f)]
+    commons = [(h, f) for h, f in languages if 'common' in h['Categories']]
+    others = [(h, f) for h, f in languages if 'common' not in h['Categories']]
     return commons, others
 
 def readme(path):
