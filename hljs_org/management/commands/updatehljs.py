@@ -45,24 +45,22 @@ class Command(BaseCommand):
         assert re.search('release = \'%s\'' % version, conf) is not None
 
         log.info('Building CDN build to populate cache...')
-        run(['python3', 'tools/build.py', '--target', 'cdn', 'none'])
+        run(['nodejs', 'tools/build.js', '--target', 'cdn', 'none'])
         log.info('Moving CDN build over to %s' % settings.HLJS_CACHE)
         if os.path.exists(settings.HLJS_CACHE):
             shutil.rmtree(settings.HLJS_CACHE)
-        shutil.copytree('build', settings.HLJS_CACHE)
+        shutil.move('build', settings.HLJS_CACHE)
 
         lines = run(['git', '--git-dir', os.path.join(settings.HLJS_CDN_SOURCE, '.git'), 'tag']).decode('utf-8').splitlines()
         if version in lines:
             log.info('Tag %s already exists on the CDN repo' % version)
         else:
             log.info('Updating CDN repo at %s' % settings.HLJS_CDN_SOURCE)
+            run(['nodejs', 'tools/build.js', '--target', 'cdn', ':common'])
             build_dir = os.path.join(settings.HLJS_CDN_SOURCE, 'build')
             if os.path.exists(build_dir):
                 shutil.rmtree(build_dir)
-            shutil.copytree('build', build_dir)
-            # need to replace the empty highlight.min.js with the one with :common set
-            run(['python3', 'tools/build.py', '--target', 'browser', ':common'])
-            shutil.copy(os.path.join('build', 'highlight.pack.js'), os.path.join(build_dir, 'highlight.min.js'))
+            shutil.move('build', build_dir)
             os.chdir(settings.HLJS_CDN_SOURCE)
             run(['git', 'add', '.'])
             run(['git', 'commit', '-m', 'Update to version %s' % version])
@@ -88,7 +86,7 @@ class Command(BaseCommand):
         log.info('Published npm version is %s' % published_version)
         if published_version != node_version:
             log.info('Publishing version %s to npm...' % node_version)
-            run(['python3', 'tools/build.py', '--target', 'node'])
+            run(['nodejs', 'tools/build.js', '--target', 'node'])
             run(['npm', 'publish', 'build'])
 
         if os.path.isfile(settings.HLJS_TOUCHFILE):

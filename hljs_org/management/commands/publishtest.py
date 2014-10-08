@@ -24,7 +24,7 @@ class Command(BaseCommand):
         tools_path = os.path.join(settings.HLJS_SOURCE, 'tools')
 
         log.info('Building full browser build...')
-        run(['python3', os.path.join(tools_path, 'build.py'), '--target', 'browser'])
+        run(['nodejs', os.path.join(tools_path, 'build.js'), '--target', 'browser'])
 
         log.info('Copying highlight.pack.js...')
         shutil.copy(os.path.join(build_path, 'highlight.pack.js'), settings.STATIC_ROOT)
