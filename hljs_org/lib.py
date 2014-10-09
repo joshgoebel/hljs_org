@@ -36,6 +36,8 @@ def news(path, version):
 
 def check_cdn(url):
     try:
+        if not url.startswith('http'):
+            url = 'http://' + url
         status = request.urlopen(url).status
     except request.HTTPError as e:
         status = e.code
