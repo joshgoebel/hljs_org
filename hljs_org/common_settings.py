@@ -64,8 +64,13 @@ HLJS_CODESTYLES = [
 HLJS_CDNS = [
     (
         'cdnjs',
-        'http://cdnjs.cloudflare.com/ajax/libs/highlight.js/%s/highlight.min.js',
-        'http://cdnjs.cloudflare.com/ajax/libs/highlight.js/%s/styles/default.min.css',
+        '//cdnjs.cloudflare.com/ajax/libs/highlight.js/%s/highlight.min.js',
+        '//cdnjs.cloudflare.com/ajax/libs/highlight.js/%s/styles/default.min.css',
+    ),
+    (
+        'jsdelivr',
+        '//cdn.jsdelivr.net/highlight.js/%s/highlight.min.js',
+        '//cdn.jsdelivr.net/highlight.js/%s/styles/highlight.min.js',
     ),
     (
         'Yandex',
