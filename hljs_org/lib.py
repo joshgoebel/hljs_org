@@ -63,7 +63,7 @@ def parse_header(filename):
         return
     headers = match.group(1).split('\n')
     headers = dict(h.strip().split(': ') for h in headers if ': ' in h)
-    headers['Categories'] = [c.strip() for c in headers.get('Categories', '').split(',')]
+    headers['Category'] = [c.strip() for c in headers.get('Category', '').split(',')]
     return headers if 'Language' in headers else None
 
 def buildzip(src_path, cache_path, filenames):
@@ -92,8 +92,8 @@ def listlanguages(src_path):
     filenames = os.listdir(lang_path)
     languages = [(parse_header(os.path.join(lang_path, f)), f) for f in filenames]
     languages.sort(key=lambda l: l[0]['Language'])
-    commons = [(h, f) for h, f in languages if 'common' in h['Categories']]
-    others = [(h, f) for h, f in languages if 'common' not in h['Categories']]
+    commons = [(h, f) for h, f in languages if 'common' in h['Category']]
+    others = [(h, f) for h, f in languages if 'common' not in h['Category']]
     return commons, others
 
 def readme(path):
