@@ -4,7 +4,7 @@ import re
 from io import BytesIO
 import zipfile
 from datetime import datetime
-from urllib import request
+from urllib import request, parse
 from codecs import open
 
 from django.utils.html import escape
@@ -36,9 +36,7 @@ def news(path, version):
 
 def check_cdn(url):
     try:
-        if not url.startswith('http'):
-            url = 'http://' + url
-        status = request.urlopen(url).status
+        status = request.urlopen(parse.urljoin('http:', url)).status
     except request.HTTPError as e:
         status = e.code
     return url if status == 200 else None
