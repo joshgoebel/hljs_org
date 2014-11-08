@@ -18,8 +18,8 @@ class Command(BaseCommand):
     requires_system_check = False
 
     def handle(self, *args, **options):
+        os.chdir(settings.HLJS_SOURCE)
         log.info('Publishing test page to %s' % settings.STATIC_ROOT)
-        src_path = os.path.join(settings.HLJS_SOURCE, 'src')
         build_path = os.path.join(settings.HLJS_SOURCE, 'build')
         tools_path = os.path.join(settings.HLJS_SOURCE, 'tools')
 
@@ -29,13 +29,8 @@ class Command(BaseCommand):
         log.info('Copying highlight.pack.js...')
         shutil.copy(os.path.join(build_path, 'highlight.pack.js'), settings.STATIC_ROOT)
 
-        log.info('Copying test.html...')
-        test = open(os.path.join(src_path, 'test.html'), encoding='utf-8').read()
-        test = test.replace('../build/highlight.pack.js', 'highlight.pack.js')
-        open(os.path.join(settings.STATIC_ROOT, 'test.html'), 'w', encoding='utf-8').write(test)
-
-        log.info('Copying styles...')
-        styles_dst = os.path.join(settings.STATIC_ROOT, 'styles')
-        if os.path.exists(styles_dst):
-            shutil.rmtree(styles_dst)
-        shutil.copytree(os.path.join(src_path, 'styles'), styles_dst)
+        log.info('Copying demo...')
+        demo_dst = os.path.join(settings.STATIC_ROOT, 'demo')
+        if os.path.exists(demo_dst):
+            shutil.rmtree(demo_dst)
+        shutil.copytree(os.path.join(build_path, 'demo'), demo_dst)
