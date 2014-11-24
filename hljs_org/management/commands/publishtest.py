@@ -14,7 +14,7 @@ def run(args):
     return subprocess.check_output(args, stderr=subprocess.STDOUT)
 
 class Command(BaseCommand):
-    help = 'Publishes test.html on the Web. This requires up to date cache for building highlight.pack.js'
+    help = 'Publishes the demo on the Web. This requires up to date cache for building highlight.pack.js'
     requires_system_check = False
 
     def handle(self, *args, **options):
