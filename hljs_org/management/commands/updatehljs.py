@@ -33,7 +33,7 @@ class Command(BaseCommand):
         os.chdir(settings.HLJS_SOURCE)
         log.info('Checking out version %s...' % version)
         run(['git', 'checkout', 'master'])
-        run(['git', 'pull'])
+        run(['git', 'pull', '-f'])
         run(['git', 'checkout', version])
 
         log.info('Checking version consistency within the source...')
@@ -43,6 +43,9 @@ class Command(BaseCommand):
         conf = open('docs/conf.py').read()
         assert re.search('version = \'%s\'' % version, conf) is not None
         assert re.search('release = \'%s\'' % version, conf) is not None
+
+        log.info('Updating node dependencies...')
+        run(['npm', 'update'])
 
         log.info('Building CDN build to populate cache...')
         run(['nodejs', 'tools/build.js', '--target', 'cdn', 'none'])
