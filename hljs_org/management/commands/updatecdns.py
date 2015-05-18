@@ -25,9 +25,12 @@ class Command(BaseCommand):
         version = lib.version(settings.HLJS_SOURCE)
         for title, script_url, style_url in settings.HLJS_CDNS:
             script_url = script_url % version
-            result = lib.check_cdn(script_url)
-            if result:
-                cache.set(script_url, script_url, options['expire'])
-            else:
-                cache.delete(script_url)
-            log.info('%s: %s' % (str(bool(result)).upper(), script_url))
+            try:
+                result = lib.check_cdn(script_url)
+                if result:
+                    cache.set(script_url, script_url, options['expire'])
+                else:
+                    cache.delete(script_url)
+                log.info('%s: %s' % (str(bool(result)).upper(), script_url))
+            except IOError as e:
+                log.error('Failed updating %s: %s' % (script_url, e))
