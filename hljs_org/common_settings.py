@@ -70,7 +70,7 @@ HLJS_CDNS = [
     (
         'jsdelivr',
         '//cdn.jsdelivr.net/highlight.js/%s/highlight.min.js',
-        '//cdn.jsdelivr.net/highlight.js/%s/styles/highlight.min.js',
+        '//cdn.jsdelivr.net/highlight.js/%s/styles/default.min.css',
     ),
     (
         'Yandex',
