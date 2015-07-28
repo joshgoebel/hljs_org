@@ -54,23 +54,24 @@ class Command(BaseCommand):
             shutil.rmtree(settings.HLJS_CACHE)
         shutil.move('build', settings.HLJS_CACHE)
 
+        log.info('Updating CDN repo at %s' % settings.HLJS_CDN_SOURCE)
+        run(['nodejs', 'tools/build.js', '--target', 'cdn', ':common'])
+        os.chdir(settings.HLJS_CDN_SOURCE)
+        run(['git', 'pull', '-f'])
         lines = run(['git', '--git-dir', os.path.join(settings.HLJS_CDN_SOURCE, '.git'), 'tag']).decode('utf-8').splitlines()
         if version in lines:
-            log.info('Tag %s already exists on the CDN repo' % version)
+            log.info('Tag %s already exists in the local CDN repo' % version)
         else:
-            log.info('Updating CDN repo at %s' % settings.HLJS_CDN_SOURCE)
-            run(['nodejs', 'tools/build.js', '--target', 'cdn', ':common'])
             build_dir = os.path.join(settings.HLJS_CDN_SOURCE, 'build')
             if os.path.exists(build_dir):
                 shutil.rmtree(build_dir)
-            shutil.move('build', build_dir)
-            os.chdir(settings.HLJS_CDN_SOURCE)
+            shutil.move(os.path.join(settings.HLJS_SOURCE, 'build'), build_dir)
             run(['git', 'add', '.'])
             run(['git', 'commit', '-m', 'Update to version %s' % version])
             run(['git', 'tag', version])
-            run(['git', 'push'])
-            run(['git', 'push', '--tags'])
-            os.chdir(settings.HLJS_SOURCE)
+        run(['git', 'push'])
+        run(['git', 'push', '--tags'])
+        os.chdir(settings.HLJS_SOURCE)
 
         call_command('publishtest')
         call_command('collectstatic', interactive=False)
