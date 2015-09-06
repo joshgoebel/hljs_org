@@ -6,9 +6,13 @@ import zipfile
 from datetime import datetime
 from urllib import request, parse
 from codecs import open
+import logging
 
 from django.utils.html import escape
 import markdown
+
+
+log = logging.getLogger('hljs_org.lib')
 
 
 def version(path):
@@ -61,9 +65,13 @@ def parse_header(filename):
     match = re.search(r'^\s*/\*(.*?)\*/', content, re.S)
     if not match:
         return
-    headers = match.group(1).split('\n')
-    headers = dict(h.strip().split(': ') for h in headers if ': ' in h)
-    headers['Category'] = [c.strip() for c in headers.get('Category', '').split(',')]
+    try:
+        headers = match.group(1).split('\n')
+        headers = dict(h.strip().split(': ', 1) for h in headers if ': ' in h)
+        headers['Category'] = [c.strip() for c in headers.get('Category', '').split(',')]
+    except Exception as e:
+        log.error('Error parsing header of %s: %s' % (filename, e))
+        raise
     return headers if 'Language' in headers else None
 
 def buildzip(src_path, cache_path, filenames):
