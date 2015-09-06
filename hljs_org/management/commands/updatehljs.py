@@ -37,11 +37,13 @@ class Command(BaseCommand):
         run(['git', 'checkout', version])
 
         log.info('Checking version consistency within the source...')
-        node_version = version if len(version.split('.')) >= 3 else '%s.0' % version
+        version_numbers = version.split('.')
+        node_version = version if len(version_numbers) >= 3 else '%s.0' % version
+        short_version = version if len(version_numbers) <= 2 else '.'.join(version_numbers[:2])
         assert lib.version(settings.HLJS_SOURCE) == version
         assert re.search(r'"version"\s*:\s*"%s"' % node_version, open('package.json', encoding='utf-8').read()) is not None
         conf = open('docs/conf.py', encoding='utf-8').read()
-        assert re.search('version = \'%s\'' % version, conf) is not None
+        assert re.search('version = \'%s\'' % short_version, conf) is not None
         assert re.search('release = \'%s\'' % version, conf) is not None
 
         log.info('Updating node dependencies...')
