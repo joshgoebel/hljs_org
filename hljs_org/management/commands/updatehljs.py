@@ -39,8 +39,8 @@ class Command(BaseCommand):
         log.info('Checking version consistency within the source...')
         node_version = version if len(version.split('.')) >= 3 else '%s.0' % version
         assert lib.version(settings.HLJS_SOURCE) == version
-        assert re.search(r'"version"\s*:\s*"%s"' % node_version, open('package.json').read()) is not None
-        conf = open('docs/conf.py').read()
+        assert re.search(r'"version"\s*:\s*"%s"' % node_version, open('package.json', encoding='utf-8').read()) is not None
+        conf = open('docs/conf.py', encoding='utf-8').read()
         assert re.search('version = \'%s\'' % version, conf) is not None
         assert re.search('release = \'%s\'' % version, conf) is not None
 
