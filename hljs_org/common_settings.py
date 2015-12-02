@@ -51,11 +51,11 @@ HLJS_CACHE = '<undefined>'
 HLJS_TOUCHFILE = '<undefined>'
 HLJS_CODESTYLES = [
     'default',
-    'solarized_dark',
-    'solarized_light',
+    'solarized-dark',
+    'solarized-light',
     'github',
     'railscasts',
-    'monokai_sublime',
+    'monokai-sublime',
     'mono-blue',
     'tomorrow',
     'color-brewer',
