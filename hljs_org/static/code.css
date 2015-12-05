@@ -1,17 +1,27 @@
 pre {
-  margin: 2em;
+  margin: 2em 0;
 }
 
-pre code .hljs-keyword,
-pre code .hljs-title {
+.hljs {
+  display: block; padding: 1em;
+  background: #500; color: #ECC;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #400 #700 #700 #400;
+}
+
+.hljs-keyword,
+.hljs-title,
+.hljs-name {
+  color: white;
   font-weight: bold;
 }
 
-pre code .hljs-string,
-pre code .hljs-value {
-  color: #F88;
+.hljs-string,
+.hljs-literal {
+  color: #F77;
 }
 
-pre code .hljs-comment {
-    color: #AAA;
+.hljs-comment {
+    color: #766;
 }
