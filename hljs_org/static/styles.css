@@ -1,5 +1,4 @@
 @import url(//fonts.googleapis.com/css?family=PT+Sans:400,700,400italic);
-@import url(//fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
 
 body {
   color: #F0F0F0;
@@ -32,7 +31,7 @@ ul.ui li {
 }
 
 pre code {
-  font: normal 12pt Ubuntu Mono;
+  font: normal 10pt Consolas, Monaco, monospace;
 }
 
 #header {
@@ -66,7 +65,7 @@ pre code {
 
 #snippet pre code {
   display: block;
-  height: 16em; padding: 1em;
+  height: 19em; padding: 1em;
   overflow-y: auto; overflow-x: hidden;
 }
 
