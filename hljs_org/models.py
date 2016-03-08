@@ -3,12 +3,6 @@ from django.utils.html import mark_safe
 import markdown
 
 
-class Snippet(models.Model):
-    code = models.TextField()
-
-    def __str__(self):
-        return self.code.replace('\n', ' ')[:100]
-
 class News(models.Model):
     text = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
