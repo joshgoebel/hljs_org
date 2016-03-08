@@ -38,6 +38,13 @@ def news(path, version):
         readme = readme[:match.start()]
     return header + readme.strip()
 
+def snippet(path, language):
+    try:
+        filename = os.path.join(path, 'test', 'detect', language, 'default.txt')
+        return open(filename, encoding='utf-8').read()
+    except FileNotFoundError:
+        return ''
+
 def check_cdn(url):
     try:
         status = request.urlopen(parse.urljoin('http:', url)).status

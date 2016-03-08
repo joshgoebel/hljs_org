@@ -61,6 +61,27 @@ HLJS_CODESTYLES = [
     'color-brewer',
     'zenburn',
 ]
+HLJS_SNIPPETS = [
+    'python',
+    'xml',
+    'javascript',
+    'http',
+    'cpp',
+    'sql',
+    'clojure',
+    'cs',
+    'objectivec',
+    'java',
+    'swift',
+    'css',
+    'ruby',
+    'makefile',
+    'go',
+    'coffeescript',
+    'bash',
+    'ini',
+    'rust',
+]
 HLJS_CDNS = [
     (
         'cdnjs',

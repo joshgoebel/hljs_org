@@ -29,7 +29,7 @@ def curnext(items, index):
     return index, (index + 1) % len(items)
 
 def index(request):
-    snippets = list(models.Snippet.objects.order_by('pk'))
+    snippets = [lib.snippet(settings.HLJS_SOURCE, l) for l in settings.HLJS_SNIPPETS]
     snippet_current, snippet_next = curnext(snippets, request.GET.get('snippet'))
     styles = settings.HLJS_CODESTYLES
     style_current, style_next = curnext(styles, request.GET.get('style'))
