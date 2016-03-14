@@ -4,7 +4,7 @@
 {% block title %}highlight.js{% endblock %}
 
 {% block codestyle %}
-{% for s in styles %}<link class="codestyle" rel="{% if s != style %}alternate {% endif %}stylesheet" href="{% static 'demo/styles/' %}{{ s }}.css">
+{% for s in styles %}<link class="codestyle" rel="stylesheet" disabled href="{% static 'demo/styles/' %}{{ s }}.css">
 {% endfor %}
 {% endblock %}
 {% block highlightinit %}
@@ -15,7 +15,6 @@
     var style = document.getElementById('style-link').textContent;
     var links = document.querySelectorAll('.codestyle');
     Array.prototype.forEach.call(links, function(link) {
-      link.rel = 'stylesheet';
       link.disabled = !link.href.match(style + '\\.css$');
     });
     document.getElementById('language-link').innerHTML = snippet.result.language;
