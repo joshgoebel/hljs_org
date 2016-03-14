@@ -212,4 +212,10 @@ pre code {
   border-style: solid;
   border-color: #400 #700 #700 #400;
   overflow-x: auto;
+  transition: height 0.25s, padding 0.25s;
+}
+
+#updates .error.hidden {
+  height: 0; padding-top: 0; padding-bottom: 0;
+  border: none;
 }

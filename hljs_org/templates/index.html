@@ -10,21 +10,34 @@
 {% block highlightinit %}
 <script>
   function initSnippet() {
-    var snippet = $('#snippet pre code');
-    hljs.highlightBlock(snippet.get(0));
-    var style = $('#style-link').text();
-    $('.codestyle').each(function(i, e) {
-      e.rel = 'stylesheet';
-      e.disabled = !e.href.match(style + '\\.css$');
+    var snippet = document.querySelector('#snippet pre code');
+    hljs.highlightBlock(snippet);
+    var style = document.getElementById('style-link').textContent;
+    var links = document.querySelectorAll('.codestyle');
+    Array.prototype.forEach.call(links, function(link) {
+      link.rel = 'stylesheet';
+      link.disabled = !link.href.match(style + '\\.css$');
     });
-    $('#language-link').html(snippet.get(0).result.language);
-    $('#control a').click(function(e) {
-      e.preventDefault();
-      $('#snippet').load(this.href, initSnippet);
+    document.getElementById('language-link').innerHTML = snippet.result.language;
+    var controls = document.querySelectorAll('#control a');
+    Array.prototype.forEach.call(controls, function(control) {
+      control.addEventListener('click', function(e) {
+        e.preventDefault();
+        var request = new XMLHttpRequest();
+        request.open('GET', control.href, true);
+        request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        request.onreadystatechange = function() {
+          if (request.readyState = XMLHttpRequest.DONE && request.status == 200) {
+            document.getElementById('snippet').innerHTML = request.responseText;
+            initSnippet();
+          }
+        };
+        request.send();
+      });
     });
   }
 
-  $(document).ready(initSnippet);
+  addEventListener('load', initSnippet);
 </script>
 {% endblock %}
 

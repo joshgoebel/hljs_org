@@ -21,12 +21,16 @@
 </div>
 
 <script>
-  $('.status.failed b').addClass('active').each(function(i, el) {
-    var pre = $(el).parents('.status').find('.error');
-    pre.hide();
-    $(el).click(function() {
-      pre.slideToggle();
-    });
+  var divs = document.querySelectorAll('.status.failed');
+  Array.prototype.forEach.call(divs, function(div) {
+    var link = div.querySelector('b');
+    var pre = div.querySelector('.error');
+    pre.classList.add('hidden');
+    link.classList.add('active');
+    link.addEventListener('click', function() {
+      pre.classList.toggle('hidden');
+    })
   });
+
 </script>
 {% endblock %}
