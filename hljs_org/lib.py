@@ -5,7 +5,6 @@ from io import BytesIO
 import zipfile
 from datetime import datetime
 from urllib import request, parse
-from codecs import open
 import logging
 
 from django.utils.html import escape
