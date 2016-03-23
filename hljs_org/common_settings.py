@@ -60,6 +60,11 @@ HLJS_CODESTYLES = [
     'tomorrow',
     'color-brewer',
     'zenburn',
+    'agate',
+    'androidstudio',
+    'dracula',
+    'rainbow',
+    'vs',
 ]
 HLJS_SNIPPETS = [
     'python',
@@ -81,6 +86,8 @@ HLJS_SNIPPETS = [
     'bash',
     'ini',
     'rust',
+    'handlebars',
+    'prolog',
 ]
 HLJS_CDNS = [
     (
