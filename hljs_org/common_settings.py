@@ -88,6 +88,7 @@ HLJS_SNIPPETS = [
     'rust',
     'handlebars',
     'prolog',
+    'typescript',
 ]
 HLJS_CDNS = [
     (
