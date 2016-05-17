@@ -89,6 +89,7 @@ HLJS_SNIPPETS = [
     'handlebars',
     'prolog',
     'typescript',
+    'elm',
 ]
 HLJS_CDNS = [
     (
