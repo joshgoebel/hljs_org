@@ -4,7 +4,8 @@
 {% block title %}highlight.js{% endblock %}
 
 {% block codestyle %}
-<link id="codestyle" rel="stylesheet"  href="{% static 'demo/styles/' %}{{ style }}.css">
+{% for s in styles %}
+<link class="codestyle" rel="{% if s != style %}prefetch alternate {% endif %}stylesheet" href="{% static 'demo/styles/' %}{{ s }}.css">{% endfor %}
 {% endblock %}
 {% block highlightinit %}
 <script>
@@ -12,7 +13,11 @@
     var snippet = document.querySelector('#snippet pre code');
     hljs.highlightBlock(snippet);
     var style = document.getElementById('style-link').textContent;
-    document.getElementById('codestyle').href = "{% static 'demo/styles/' %}" + style + ".css";
+    var links = document.querySelectorAll('.codestyle');
+    Array.prototype.forEach.call(links, function(link) {
+      link.rel = 'stylesheet';
+      link.disabled = !link.href.match(style + '\\.css$');
+    });
     document.getElementById('language-link').innerHTML = snippet.result.language;
     var controls = document.querySelectorAll('#control a');
     Array.prototype.forEach.call(controls, function(control) {
