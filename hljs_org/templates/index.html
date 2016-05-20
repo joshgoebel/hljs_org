@@ -27,7 +27,7 @@
         request.open('GET', control.href, true);
         request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         request.onreadystatechange = function() {
-          if (request.readyState = XMLHttpRequest.DONE && request.status == 200) {
+          if (request.readyState == XMLHttpRequest.DONE && request.status == 200) {
             document.getElementById('snippet').innerHTML = request.responseText;
             initSnippet();
           }
