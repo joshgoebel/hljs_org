@@ -102,7 +102,7 @@ def buildzip(src_path, cache_path, filenames):
     styles_path = os.path.join(src_path, 'src', 'styles')
     for filename in os.listdir(styles_path):
         zip.write(os.path.join(styles_path, filename), 'styles/%s' % filename)
-    filenames = _dedupe(_with_dependents(os.path.join(src_path, 'languages'), filenames))
+    filenames = _dedupe(_with_dependents(os.path.join(src_path, 'src', 'languages'), filenames))
     filenames = [os.path.join(cache_path, 'languages', f.replace('.js', '.min.js')) for f in filenames]
     filenames = [f for f in filenames if os.path.exists(f)]
     hljs = ''.join(
