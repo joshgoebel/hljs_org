@@ -74,11 +74,25 @@ def parse_header(filename):
     try:
         headers = match.group(1).split('\n')
         headers = dict(h.strip().split(': ', 1) for h in headers if ': ' in h)
-        headers['Category'] = [c.strip() for c in headers.get('Category', '').split(',')]
+        for key in ['Requires', 'Category']:
+            headers[key] = [v.strip() for v in headers.get(key, '').split(',') if v]
     except Exception as e:
         log.error('Error parsing header of %s: %s' % (filename, e))
         raise
     return headers if 'Language' in headers else None
+
+def _with_dependents(path, filenames):
+    for filename in filenames:
+        requires = parse_header(os.path.join(path, filename))['Requires']
+        yield from _with_dependents(path, requires)
+        yield filename
+
+def _dedupe(sequence):
+    seen = set()
+    for item in sequence:
+        if item not in seen:
+            yield item
+        seen.add(item)
 
 def buildzip(src_path, cache_path, filenames):
     result = BytesIO()
@@ -88,6 +102,7 @@ def buildzip(src_path, cache_path, filenames):
     styles_path = os.path.join(src_path, 'src', 'styles')
     for filename in os.listdir(styles_path):
         zip.write(os.path.join(styles_path, filename), 'styles/%s' % filename)
+    filenames = _dedupe(_with_dependents(os.path.join(src_path, 'languages'), filenames))
     filenames = [os.path.join(cache_path, 'languages', f.replace('.js', '.min.js')) for f in filenames]
     filenames = [f for f in filenames if os.path.exists(f)]
     hljs = ''.join(
