@@ -4,3 +4,10 @@ hljs_org/static/test.html
 hljs_org/settings.py
 __pycache__
 hljs_org/static/admin
+bin
+include
+lib
+lib64
+pyvenv.cfg
+share
+pip-selfcheck.json
