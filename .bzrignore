@@ -1,13 +1,8 @@
 hljs_org/static/highlight.pack.js
-hljs_org/static/styles
+hljs_org/static/styles.css
 hljs_org/static/test.html
+hljs_org/static/admin
+hljs_org/static/demo
 hljs_org/settings.py
 __pycache__
-hljs_org/static/admin
-bin
-include
-lib
-lib64
-pyvenv.cfg
-share
-pip-selfcheck.json
+venv
