@@ -1,0 +1,45 @@
+server {
+  server_name www.highlightjs.org;
+
+  listen 80;
+  return 301 https://highlightjs.org$request_uri;
+}
+
+server {
+  server_name www.highlightjs.org;
+
+  listen 443 ssl;
+  ssl_certificate /etc/ssl/private/highlightjs.org.combined.crt;
+  ssl_certificate_key /etc/ssl/private/highlightjs.org.key;
+  add_header Strict-Transport-Security "max-age=31536000; includeSubdomains";
+  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+
+  return 301 https://highlightjs.org$request_uri;
+}
+
+server {
+  server_name highlightjs.org;
+
+  listen 443 ssl;
+  ssl_certificate /etc/ssl/private/highlightjs.org.combined.crt;
+  ssl_certificate_key /etc/ssl/private/highlightjs.org.key;
+  add_header Strict-Transport-Security "max-age=31536000; includeSubdomains";
+  ssl_session_cache shared:SSL:1m;
+  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+
+  root /var/www/hljs_org;
+  index index.html;
+  gzip on;
+  gzip_types application/x-javascript text/css;
+
+  rewrite ^/static/test.html /static/demo/ permanent;
+
+  location ~ ^/(static/|robots.txt|favicon.ico)(.*)$ {
+    alias /var/www/hljs_org/$1$2;
+  }
+
+  location / {
+    include uwsgi_params;
+    uwsgi_pass unix:/run/uwsgi/app/hljs_org/socket;
+  }
+}

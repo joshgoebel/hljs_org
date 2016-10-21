@@ -1,0 +1,7 @@
+Package: hljs-org-environment
+Version: 1.0
+Priority: optional
+Architecture: all
+Depends: python3, nginx, uwsgi
+Maintainer: Ivan Sagalaev <maniac@softwaremaniacs.org>
+Description: Server environment for hljs_org project

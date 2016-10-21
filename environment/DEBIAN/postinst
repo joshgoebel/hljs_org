@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+LOGDIR="/var/log/uwsgi/app"
+LOGFILE="$LOGDIR/hljs_org.log"
+
+if [ ! -d $LOGDIR ]; then
+  mkdir $LOGDIR
+fi
+touch $LOGFILE
+chown maniac.maniac $LOGFILE
+
+chmod 644 /etc/cron.d/hljs_org

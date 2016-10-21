@@ -1,0 +1,3 @@
+# m  h    dom  mon  dow user    command
+
+3    *    *    *    *   maniac  /home/maniac/hljs_org/venv/bin/python /home/maniac/hljs_org/manage.py updatecdns 2>> /var/log/uwsgi/app/hljs_org.log

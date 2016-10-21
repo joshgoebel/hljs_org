@@ -95,10 +95,6 @@ class Command(BaseCommand):
             run(['nodejs', 'tools/build.js', '--target', 'node'])
             run(['npm', 'publish', 'build'])
 
-        if os.path.isfile(settings.HLJS_TOUCHFILE):
-            log.info('Signaling site restart...')
-            os.utime(settings.HLJS_TOUCHFILE)
-
         log.info('Update to version %s completed.' % version)
 
     def handle(self, version, **options):
