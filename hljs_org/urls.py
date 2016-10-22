@@ -1,13 +1,13 @@
-from django.conf.urls import patterns, include, url
-
+from django.conf.urls import include, url
 from django.contrib import admin
-admin.autodiscover()
-
 from django.views.generic import TemplateView
 
 from hljs_org import views
 
-urlpatterns = patterns('',
+
+admin.autodiscover()
+
+urlpatterns = [
 
     url(r'^$', views.index, name='index'),
     url(r'^download/$', views.download, name='download'),
@@ -18,4 +18,4 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
 
-)
+]
