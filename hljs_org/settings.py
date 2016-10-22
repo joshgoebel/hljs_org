@@ -127,6 +127,8 @@ HLJS_CODESTYLES = [
     'dracula',
     'rainbow',
     'vs',
+    'atom-one-dark',
+    'atom-one-light',
 ]
 
 HLJS_SNIPPETS = [
