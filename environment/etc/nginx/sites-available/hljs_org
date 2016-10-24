@@ -34,7 +34,7 @@ server {
 
   rewrite ^/static/test.html /static/demo/ permanent;
 
-  location ~ ^/(static/|robots.txt|favicon.ico)(.*)$ {
+  location ~ ^/(static/|robots.txt|favicon.ico|apple-touch-icon)(.*)$ {
     alias /var/www/hljs_org/$1$2;
   }
 
