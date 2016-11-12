@@ -109,7 +109,10 @@ HLJS_CACHE = env('HLJS_CACHE', '../cache')
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/var/www/hljs_org/static'
-STATICFILES_DIRS = ['../highlight.js/build']
+# Include highlight.js built static content in DEBUG mode so `runserver` could
+# serve it automatically. In production it's going to break `collectstatic`.
+if DEBUG:
+    STATICFILES_DIRS = ['../highlight.js/build']
 
 HLJS_CODESTYLES = [
     'default',
