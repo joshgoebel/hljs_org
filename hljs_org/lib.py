@@ -104,8 +104,8 @@ def buildzip(src_path, cache_path, filenames):
     styles_path = os.path.join(src_path, 'src', 'styles')
     for filename in os.listdir(styles_path):
         zip.write(os.path.join(styles_path, filename), 'styles/%s' % filename)
-    filenames = _dedupe(_with_dependents(os.path.join(src_path, 'src', 'languages'), filenames))
-    filenames = [os.path.join(cache_path, 'languages', f.replace('.js', '.min.js')) for f in filenames]
+    languages = list(_dedupe(_with_dependents(os.path.join(src_path, 'src', 'languages'), filenames)))
+    filenames = [os.path.join(cache_path, 'languages', l.replace('.js', '.min.js')) for l in languages]
     hljs = ''.join(
         open(f, encoding='utf-8').read()
         for f in [os.path.join(cache_path, 'highlight.min.js')] + filenames
@@ -115,7 +115,7 @@ def buildzip(src_path, cache_path, filenames):
     zip.writestr(info, hljs)
     zip.close()
     result.seek(0)
-    return result
+    return result, languages
 
 def listlanguages(src_path):
     lang_path = os.path.join(src_path, 'src', 'languages')

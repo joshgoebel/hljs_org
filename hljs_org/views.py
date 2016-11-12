@@ -50,7 +50,7 @@ def index(request):
 def download(request):
     if request.method == 'POST':
         languages = set(request.POST.keys())
-        content = lib.buildzip(settings.HLJS_SOURCE, settings.HLJS_CACHE, languages)
+        content, languages = lib.buildzip(settings.HLJS_SOURCE, settings.HLJS_CACHE, languages)
         downloadlog.info(' '.join(sorted(languages)))
         response = http.HttpResponse(content, content_type='application/zip')
         response['Content-Disposition'] = 'attachment; filename=highlight.zip'
