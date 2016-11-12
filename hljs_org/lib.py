@@ -81,11 +81,13 @@ def parse_header(filename):
         raise
     return headers if 'Language' in headers else None
 
-def _with_dependents(path, filenames):
-    for filename in filenames:
-        requires = parse_header(os.path.join(path, filename))['Requires']
-        yield from _with_dependents(path, requires)
-        yield filename
+def _with_dependents(path, names):
+    for name in names:
+        filename = os.path.join(path, name)
+        header = os.path.exists(filename) and parse_header(filename)
+        if header:
+            yield from _with_dependents(path, header['Requires'])
+            yield name
 
 def _dedupe(sequence):
     seen = set()
@@ -104,7 +106,6 @@ def buildzip(src_path, cache_path, filenames):
         zip.write(os.path.join(styles_path, filename), 'styles/%s' % filename)
     filenames = _dedupe(_with_dependents(os.path.join(src_path, 'src', 'languages'), filenames))
     filenames = [os.path.join(cache_path, 'languages', f.replace('.js', '.min.js')) for f in filenames]
-    filenames = [f for f in filenames if os.path.exists(f)]
     hljs = ''.join(
         open(f, encoding='utf-8').read()
         for f in [os.path.join(cache_path, 'highlight.min.js')] + filenames
