@@ -46,8 +46,8 @@ class Command(BaseCommand):
         log.info('Building browser build for [%s]...' % ' '.join(settings.HLJS_SNIPPETS))
         build_highlightjs(settings.HLJS_SNIPPETS)
 
-        log.info('Copying highlight.index.pack.js...')
+        log.info('Copying highlight.site.pack.js...')
         shutil.copy(
             os.path.join(build_path, 'highlight.pack.js'),
-            os.path.join(static_root, 'highlight.index.pack.js')
+            os.path.join(static_root, 'highlight.site.pack.js')
         )
