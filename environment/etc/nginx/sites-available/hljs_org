@@ -30,7 +30,7 @@ server {
   root /var/www/hljs_org;
   index index.html;
   gzip on;
-  gzip_types application/x-javascript text/css;
+  gzip_types application/javascript text/css;
 
   rewrite ^/static/test.html /static/demo/ permanent;
 
