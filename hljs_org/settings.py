@@ -108,7 +108,7 @@ HLJS_CDN_SOURCE = env('HLJS_CDN_SOURCE', '../cdn-release')
 HLJS_CACHE = env('HLJS_CACHE', '../cache')
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/var/www/hljs_org/static'
+STATIC_ROOT = './static'
 # Include highlight.js built static content in DEBUG mode so `runserver` could
 # serve it automatically. In production it's going to break `collectstatic`.
 if DEBUG:
