@@ -158,6 +158,7 @@ HLJS_SNIPPETS = [
     'prolog',
     'typescript',
     'elm',
+    'json',  # needed as a sub-language for 'http'
 ]
 
 HLJS_CDNS = [
