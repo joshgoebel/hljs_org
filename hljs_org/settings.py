@@ -169,7 +169,7 @@ HLJS_CDNS = [
     ),
     (
         'jsdelivr',
-        '//cdn.jsdelivr.net/highlight.js/%s/highlight.min.js',
-        '//cdn.jsdelivr.net/highlight.js/%s/styles/default.min.css',
+        '//cdn.jsdelivr.net/gh/highlightjs/cdn-release@%s/build/highlight.min.js',
+        '//cdn.jsdelivr.net/gh/highlightjs/cdn-release@%s/build/styles/default.min.css',
     ),
 ]
