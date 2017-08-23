@@ -41,7 +41,8 @@
   <div id="cdns">
   {% for title, script_url, style_url in cdns %}
   <h3>{{ title }}</h3>
-<pre><code>&lt;link rel="stylesheet" href="{{ style_url }}"&gt;
+<pre><code>&lt;link rel="stylesheet"
+      href="{{ style_url }}"&gt;
 &lt;script src="{{ script_url }}"&gt;&lt;/script&gt;
 </code></pre>
   {% endfor %}
