@@ -22,17 +22,13 @@
     var controls = document.querySelectorAll('#control a');
     Array.prototype.forEach.call(controls, function(control) {
       control.addEventListener('click', function(e) {
-        e.preventDefault();
-        var request = new XMLHttpRequest();
-        request.open('GET', control.href, true);
-        request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-        request.onreadystatechange = function() {
-          if (request.readyState == XMLHttpRequest.DONE && request.status == 200) {
-            document.getElementById('snippet').innerHTML = request.responseText;
+        fetch(control.href, {headers: new Headers({'X-Requested-With': 'XMLHttpRequest'})})
+          .then(response => response.text())
+          .then(text => {
+            document.getElementById('snippet').innerHTML = text;
             initSnippet();
-          }
-        };
-        request.send();
+          });
+        e.preventDefault();
       });
     });
   }
