@@ -1,12 +1,7 @@
 import os
-from configparser import ConfigParser
-from collections import ChainMap
 
 
-parser = ConfigParser()
-parser.optionxform = str  # don't lowercase keys
-parser.read('/etc/hljs_org/environment.ini')
-env = ChainMap(os.environ, parser.defaults()).get
+env = os.environ.get
 
 DEBUG = env('DEBUG') != '0'
 
