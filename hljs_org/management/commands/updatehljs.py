@@ -46,8 +46,9 @@ class Command(BaseCommand):
         assert re.search('version = \'%s\'' % short_version, conf) is not None
         assert re.search('release = \'%s\'' % version, conf) is not None
 
-        log.info('Updating node dependencies...')
-        run(['npm', 'update'])
+        log.info('Reinstalling node dependencies...')
+        run(['rm', '-rf', 'node_modules'])
+        run(['npm', 'install'])
 
         log.info('Building CDN build to populate cache...')
         run(['nodejs', 'tools/build.js', '--target', 'cdn', 'none'])
