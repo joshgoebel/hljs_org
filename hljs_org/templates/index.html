@@ -10,27 +10,24 @@
 {% block highlightinit %}
 <script>
   function initSnippet() {
-    var snippet = document.querySelector('#snippet pre code');
+    let snippet = document.querySelector('#snippet pre code');
     hljs.highlightBlock(snippet);
-    var style = document.getElementById('style-link').textContent;
-    var links = document.querySelectorAll('.codestyle');
-    Array.prototype.forEach.call(links, function(link) {
+    let style = document.getElementById('style-link').textContent;
+    for (let link of document.querySelectorAll('.codestyle')) {
       link.rel = 'stylesheet';
       link.disabled = !link.href.match(style + '\\.css$');
-    });
+    }
     document.getElementById('language-link').innerHTML = snippet.result.language;
-    var controls = document.querySelectorAll('#control a');
-    Array.prototype.forEach.call(controls, function(control) {
-      control.addEventListener('click', function(e) {
+    for (let control of document.querySelectorAll('#control a')) {
+      control.addEventListener('click', e => {
         fetch(control.href, {headers: new Headers({'X-Requested-With': 'XMLHttpRequest'})})
-          .then(response => response.text())
-          .then(text => {
+          .then(response => response.text()).then(text => {
             document.getElementById('snippet').innerHTML = text;
             initSnippet();
           });
         e.preventDefault();
       });
-    });
+    }
   }
 
   addEventListener('load', initSnippet);
