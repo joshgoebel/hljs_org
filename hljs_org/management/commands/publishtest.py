@@ -16,7 +16,9 @@ def run(args):
 
 
 def build_highlightjs(languages=[]):
-    run(['nodejs', os.path.join('tools', 'build.js'), '--target', 'browser'] + languages)
+    run(['nodejs', os.path.join('tools', 'build.js'),
+        '--target', 'browser', '--docs',
+    ] + languages)
 
 
 class Command(BaseCommand):
