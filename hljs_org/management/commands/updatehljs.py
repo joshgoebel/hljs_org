@@ -34,6 +34,7 @@ class Command(BaseCommand):
         log.info('Checking out version %s...' % version)
         run(['git', 'checkout', 'master'])
         run(['git', 'pull', '-f'])
+        run(['git', 'pull', '--tags'])
         run(['git', 'checkout', version])
 
         log.info('Checking version consistency within the source...')
