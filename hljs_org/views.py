@@ -17,6 +17,7 @@ from hljs_org import lib, models
 
 
 downloadlog = logging.getLogger('hljs_org.download')
+releaselog = logging.getLogger('hljs_orgi.release')
 
 def curnext(items, index):
     if index is None:
@@ -75,14 +76,18 @@ def release(request):
     if request.method == 'POST':
         data = json.loads(request.read().decode('utf-8'))
         event = request.META.get('HTTP_X_GITHUB_EVENT', 'event')
+        releaselog.info('Github event: %s' % event)
         if event == 'push':
-            match = re.match(r'refs/tags/(\d+(\.\d+)+)', data['ref'])
-            version = match.group(1) if match else '-'
+            match = re.match(r'refs/tags/(.*)', data['ref'])
+            version = match.group(1) if match else '0'
         elif event == 'release':
             version = data['release']['tag_name']
         else:
             version = '0'
-        if parse_version(version) >= parse_version(lib.version(settings.HLJS_SOURCE)):
+        version = parse_version(version)
+        current_version = parse_version(lib.version(settings.HLJS_SOURCE))
+        releaselog.info('Parsed version: %s, current version: %s' % (version, current_version))
+        if not version.is_prerelease and version >= current_version:
             result = 'Started update to version %s. Watch progress at %s.\n' % (
                 version,
                 request.build_absolute_uri(resolve_url(release)),
