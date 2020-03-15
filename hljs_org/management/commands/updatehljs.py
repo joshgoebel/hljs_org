@@ -78,6 +78,11 @@ class Command(BaseCommand):
             run(['git', 'tag', version])
         run(['git', 'push'])
         run(['git', 'push', '--tags'])
+        if os.path.exists('package.json'):
+            log.info('Publishing CDN build to npm...')
+            run(['npm', 'publish', '.'])
+        else:
+            log.info('package.json not found in %s' % settings.HLJS_CDN_SOURCE)
         os.chdir(settings.HLJS_SOURCE)
 
         call_command('publishtest')
