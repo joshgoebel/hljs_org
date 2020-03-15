@@ -15,8 +15,11 @@ from hljs_org import lib, models
 
 log = logging.getLogger('hljs_org.updatehljs')
 
+
 def run(args):
-    return subprocess.check_output(args, stderr=subprocess.STDOUT)
+    output = subprocess.check_output(args, stderr=subprocess.STDOUT)
+    return output.decode().splitlines()
+
 
 class Command(BaseCommand):
     help = 'Updates the site for a new version of highlight.js library'
@@ -62,7 +65,7 @@ class Command(BaseCommand):
         run(['nodejs', 'tools/build.js', '--target', 'cdn', ':common'])
         os.chdir(settings.HLJS_CDN_SOURCE)
         run(['git', 'pull', '-f'])
-        lines = run(['git', '--git-dir', os.path.join(settings.HLJS_CDN_SOURCE, '.git'), 'tag']).decode('utf-8').splitlines()
+        lines = run(['git', '--git-dir', os.path.join(settings.HLJS_CDN_SOURCE, '.git'), 'tag'])
         if version in lines:
             log.info('Tag %s already exists in the local CDN repo' % version)
         else:
@@ -88,7 +91,7 @@ class Command(BaseCommand):
             for_version=version,
         )
 
-        lines = run(['npm', 'view', 'highlight.js', 'version']).decode('utf-8').splitlines()
+        lines = run(['npm', 'view', 'highlight.js', 'version'])
         lines = [l for l in lines if l and not l.startswith('npm')]
         published_version = lines[0]
         log.info('Published npm version is %s' % published_version)
@@ -107,7 +110,7 @@ class Command(BaseCommand):
             log.error(str(e))
             update.error = traceback.format_exc()
             if isinstance(e, subprocess.CalledProcessError):
-                update.error += '\n\n' + e.output.decode('utf-8')
+                update.error += '\n\n' + e.output.decode()
             raise
         finally:
             update.finished = timezone.now()
