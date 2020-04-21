@@ -93,7 +93,7 @@ def release(request):
                 request.build_absolute_uri(resolve_url(release)),
             )
             status = 202
-            subprocess.Popen(['venv/bin/python', 'manage.py', 'updatehljs', version])
+            subprocess.Popen(['venv/bin/python', 'manage.py', 'updatehljs', str(version)])
         else:
             result = 'No update started for version %s.\n' % version
             status = 200
