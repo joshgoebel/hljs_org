@@ -142,7 +142,7 @@ HLJS_SNIPPETS = [
     'cpp',
     'sql',
     'clojure',
-    'cs',
+    'csharp',
     'objectivec',
     'java',
     'swift',

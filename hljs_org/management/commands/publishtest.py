@@ -35,7 +35,7 @@ class Command(BaseCommand):
         build_highlightjs()
 
         log.info('Copying highlight.pack.js...')
-        shutil.copy(os.path.join(build_path, 'highlight.pack.js'), static_root)
+        shutil.copy(os.path.join(build_path, 'highlight.min.js'), static_root)
 
         log.info('Copying demo...')
         demo_dst = os.path.join(static_root, 'demo')
@@ -48,6 +48,6 @@ class Command(BaseCommand):
 
         log.info('Copying highlight.site.pack.js...')
         shutil.copy(
-            os.path.join(build_path, 'highlight.pack.js'),
+            os.path.join(build_path, 'highlight.min.js'),
             os.path.join(static_root, 'highlight.site.pack.js')
         )

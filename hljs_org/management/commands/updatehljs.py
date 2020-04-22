@@ -4,6 +4,7 @@ import subprocess
 import re
 import logging
 import shutil
+import json
 
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
@@ -19,6 +20,20 @@ log = logging.getLogger('hljs_org.updatehljs')
 def run(args):
     output = subprocess.check_output(args, stderr=subprocess.STDOUT)
     return output.decode().splitlines()
+
+
+def npm_publish(path):
+    log.info('Looking to publishing %s to npm...' % path)
+    package = json.load(open(os.path.join(path, 'package.json')))
+    lines = run(['npm', 'view', package['name'], 'version'])
+    lines = [l for l in lines if l and not l.startswith('npm')]
+    published_version = lines[0]
+    log.info('Found published %s=%s' % (package['name'], published_version))
+    if published_version != package['version']:
+        log.info('Publishing version %s to npm...' % package['version'])
+        run(['npm', 'publish', path])
+    else:
+        log.info('Not publishing version %s over the same' % package['version'])
 
 
 class Command(BaseCommand):
@@ -55,7 +70,7 @@ class Command(BaseCommand):
         run(['npm', 'install'])
 
         log.info('Building CDN build to populate cache...')
-        run(['nodejs', 'tools/build.js', '--target', 'cdn', 'none'])
+        run(['nodejs', 'tools/build.js', '--target', 'cdn'])
         log.info('Moving CDN build over to %s' % settings.HLJS_CACHE)
         if os.path.exists(settings.HLJS_CACHE):
             shutil.rmtree(settings.HLJS_CACHE)
@@ -66,10 +81,10 @@ class Command(BaseCommand):
         os.chdir(settings.HLJS_CDN_SOURCE)
         run(['git', 'pull', '-f'])
         lines = run(['git', '--git-dir', os.path.join(settings.HLJS_CDN_SOURCE, '.git'), 'tag'])
+        build_dir = os.path.join(settings.HLJS_CDN_SOURCE, 'build')
         if version in lines:
             log.info('Tag %s already exists in the local CDN repo' % version)
         else:
-            build_dir = os.path.join(settings.HLJS_CDN_SOURCE, 'build')
             if os.path.exists(build_dir):
                 shutil.rmtree(build_dir)
             shutil.move(os.path.join(settings.HLJS_SOURCE, 'build'), build_dir)
@@ -78,11 +93,7 @@ class Command(BaseCommand):
             run(['git', 'tag', version])
         run(['git', 'push'])
         run(['git', 'push', '--tags'])
-        if os.path.exists(os.path.join(build_dir, 'package.json')):
-            log.info('Publishing CDN build to npm...')
-            run(['npm', 'publish', build_dir])
-        else:
-            log.info('package.json not found in %s' % settings.HLJS_CDN_SOURCE)
+        npm_publish(build_dir)
         os.chdir(settings.HLJS_SOURCE)
 
         call_command('publishtest')
@@ -96,14 +107,9 @@ class Command(BaseCommand):
             for_version=version,
         )
 
-        lines = run(['npm', 'view', 'highlight.js', 'version'])
-        lines = [l for l in lines if l and not l.startswith('npm')]
-        published_version = lines[0]
-        log.info('Published npm version is %s' % published_version)
-        if published_version != node_version:
-            log.info('Publishing version %s to npm...' % node_version)
-            run(['nodejs', 'tools/build.js', '--target', 'node'])
-            run(['npm', 'publish', 'build'])
+        log.info('Building full node build...')
+        run(['nodejs', 'tools/build.js', '--target', 'node'])
+        npm_publish('build')
 
         log.info('Update to version %s completed.' % version)
 
