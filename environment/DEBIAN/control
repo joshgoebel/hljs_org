@@ -2,6 +2,6 @@ Package: hljs-org-environment
 Version: 1.0
 Priority: optional
 Architecture: all
-Depends: python3, nginx, uwsgi, zlib1g-dev
+Depends: python3, nginx, uwsgi, zlib1g-dev, libmemcached-dev
 Maintainer: Ivan Sagalaev <maniac@softwaremaniacs.org>
 Description: Server environment for hljs_org project
