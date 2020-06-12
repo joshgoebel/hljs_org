@@ -6,6 +6,7 @@ import zipfile
 from datetime import datetime
 from urllib import request, parse
 import logging
+from pathlib import Path
 
 from django.utils.html import escape
 import markdown
@@ -67,8 +68,8 @@ def counts(path):
     }
 
 def parse_header(filename):
-    content = open(filename, encoding='utf-8').read(1024)
-    match = re.search(r'^\s*/\*(.*?)\*/', content, re.S)
+    content = open(filename, encoding='utf-8').read(4096)
+    match = re.search(r'^\s*/\*(.*?)\*/', content, re.S | re.M)
     if not match:
         return
     try:
@@ -118,12 +119,15 @@ def buildzip(src_path, cache_path, filenames):
     return result, languages
 
 def listlanguages(src_path):
-    lang_path = os.path.join(src_path, 'src', 'languages')
-    filenames = os.listdir(lang_path)
-    languages = [(parse_header(os.path.join(lang_path, f)), f) for f in filenames]
+    path = Path(src_path) / 'src' / 'languages'
+    languages = [
+        (h, p.name)
+        for p in path.glob('*.js')
+        if (h := parse_header(p)) is not None
+    ]
     languages.sort(key=lambda l: l[0]['Language'])
-    commons = [(h, f) for h, f in languages if 'common' in h['Category']]
-    others = [(h, f) for h, f in languages if 'common' not in h['Category']]
+    commons = [(h, l) for h, l in languages if 'common' in h['Category']]
+    others = [(h, l) for h, l in languages if 'common' not in h['Category']]
     return commons, others
 
 def readme(path):
