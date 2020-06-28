@@ -15,19 +15,30 @@ import commonmark
 log = logging.getLogger('hljs_org.lib')
 
 
-def version(path):
+def _safe_read(path):
     try:
-        readme = open(os.path.join(path, 'CHANGES.md'), encoding='utf-8').read()
+        return path.open().read()
     except FileNotFoundError:
         return ''
+
+
+def readme(path):
+    readme = _safe_read(Path(path) / 'README.md')
+    try:
+        readme = readme[readme.find('## Getting Started'):]
+    except IndexError:
+        pass
+    return commonmark.commonmark(readme)
+
+
+def version(path):
+    readme = _safe_read(Path(path) / 'CHANGES.md')
     match = re.search(r'^## Version ([0-9\.]+)', readme, re.M)
     return match and match.group(1) or ''
 
+
 def news(path, version):
-    try:
-        readme = open(os.path.join(path, 'CHANGES.md'), encoding='utf-8').read()
-    except FileNotFoundError:
-        return ''
+    readme = _safe_read(Path(path) / 'CHANGES.md')
     match = re.search(r'^## Version (%s).*?\n+' % re.escape(version), readme, re.M)
     if not match:
         return ''
@@ -38,12 +49,11 @@ def news(path, version):
         readme = readme[:match.start()]
     return header + readme.strip()
 
+
 def snippet(path, language):
-    try:
-        filename = os.path.join(path, 'test', 'detect', language, 'default.txt')
-        return open(filename, encoding='utf-8').read()
-    except FileNotFoundError:
-        return ''
+    filename = Path(path) / 'test' / 'detect' / language / 'default.txt'
+    return _safe_read(filename)
+
 
 def check_cdn(url):
     try:
@@ -51,6 +61,7 @@ def check_cdn(url):
     except request.HTTPError as e:
         status = e.code
     return url if status == 200 else None
+
 
 def check_cdns(cdn_templates, version, cache=None):
     for title, script_url, style_url in cdn_templates:
@@ -60,6 +71,7 @@ def check_cdns(cdn_templates, version, cache=None):
         if script_url:
             yield title, script_url, style_url
 
+
 def counts(path):
     return {
         ftype: len([f for f in os.listdir(os.path.join(path, 'src', ftype)) if f.endswith(extension)])
@@ -67,8 +79,9 @@ def counts(path):
         in [('languages', '.js'), ('styles', '.css')]
     }
 
+
 def parse_header(filename):
-    content = open(filename, encoding='utf-8').read(4096)
+    content = open(filename).read(4096)
     match = re.search(r'^\s*/\*(.*?)\*/', content, re.S | re.M)
     if not match:
         return
@@ -82,6 +95,7 @@ def parse_header(filename):
         raise
     return headers if 'Language' in headers else None
 
+
 def _with_dependents(path, names):
     for name in names:
         filename = os.path.join(path, name)
@@ -90,12 +104,14 @@ def _with_dependents(path, names):
             yield from _with_dependents(path, header['Requires'])
             yield name
 
+
 def _dedupe(sequence):
     seen = set()
     for item in sequence:
         if item not in seen:
             yield item
         seen.add(item)
+
 
 def buildzip(src_path, cache_path, filenames):
     result = BytesIO()
@@ -118,6 +134,7 @@ def buildzip(src_path, cache_path, filenames):
     result.seek(0)
     return result, languages
 
+
 def listlanguages(src_path):
     path = Path(src_path) / 'src' / 'languages'
     languages = [
@@ -131,14 +148,3 @@ def listlanguages(src_path):
     return commons, others
 
 
-def readme(path):
-    try:
-        readme = (Path(path) / 'README.md').open().read()
-    except FileNotFoundError:
-        return ''
-    try:
-        readme = readme[readme.find('## Getting Started'):]
-    except IndexError:
-        pass
-
-    return commonmark.commonmark(readme)
