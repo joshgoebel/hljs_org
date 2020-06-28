@@ -1,4 +1,4 @@
-django==1.11.27
+django==3.0.7
 psycopg2-binary
 markdown
 pylibmc
