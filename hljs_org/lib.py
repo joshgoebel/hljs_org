@@ -74,9 +74,9 @@ def check_cdns(cdn_templates, version, cache=None):
 
 def counts(path):
     return {
-        ftype: len([f for f in os.listdir(os.path.join(path, 'src', ftype)) if f.endswith(extension)])
+        ftype: len(list((Path(path) / 'src' / ftype).glob(f'*.{extension}')))
         for ftype, extension
-        in [('languages', '.js'), ('styles', '.css')]
+        in [('languages', 'js'), ('styles', 'css')]
     }
 
 
@@ -98,8 +98,8 @@ def parse_header(filename):
 
 def _with_dependents(path, names):
     for name in names:
-        filename = os.path.join(path, name)
-        header = os.path.exists(filename) and parse_header(filename)
+        filename = path / name
+        header = filename.exists() and parse_header(filename)
         if header:
             yield from _with_dependents(path, header['Requires'])
             yield name
@@ -114,18 +114,20 @@ def _dedupe(sequence):
 
 
 def buildzip(src_path, cache_path, filenames):
+    src_path = Path(src_path)
+    cache_path = Path(cache_path)
     result = BytesIO()
     zip = zipfile.ZipFile(result, 'w')
     for filename in ['README.md', 'README.ru.md', 'CHANGES.md', 'LICENSE']:
-        zip.write(os.path.join(src_path, filename), filename)
-    styles_path = os.path.join(src_path, 'src', 'styles')
-    for filename in os.listdir(styles_path):
-        zip.write(os.path.join(styles_path, filename), 'styles/%s' % filename)
-    languages = list(_dedupe(_with_dependents(os.path.join(src_path, 'src', 'languages'), filenames)))
-    filenames = [os.path.join(cache_path, 'languages', l.replace('.js', '.min.js')) for l in languages]
+        zip.write(src_path / filename, filename)
+    styles_path = src_path / 'src' / 'styles'
+    for filename in styles_path.glob('*'):
+        zip.write(filename, f'styles/{filename.name}')
+    languages = list(_dedupe(_with_dependents(src_path / 'src' / 'languages', filenames)))
+    filenames = [cache_path / 'languages' / l.replace('.js', '.min.js') for l in languages]
     hljs = ''.join(
-        open(f, encoding='utf-8').read()
-        for f in [os.path.join(cache_path, 'highlight.min.js')] + filenames
+        f.open().read()
+        for f in [cache_path / 'highlight.min.js'] + filenames
     )
     info = zipfile.ZipInfo('highlight.pack.js', date_time=datetime.now().timetuple()[:6])
     info.external_attr = 0o644 << 16
