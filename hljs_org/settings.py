@@ -112,7 +112,7 @@ STATIC_ROOT = env('STATIC_ROOT', '')
 # Include highlight.js built static content in DEBUG mode so `runserver` could
 # serve it automatically. In production it's going to break `collectstatic`.
 if DEBUG:
-    STATICFILES_DIRS = ['./static']
+    STATICFILES_DIRS = ['../static']
 
 HLJS_CODESTYLES = [
     'default',
