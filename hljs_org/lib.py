@@ -1,5 +1,3 @@
-import os
-import sys
 import re
 from io import BytesIO
 import zipfile
@@ -8,7 +6,6 @@ from urllib import request, parse
 import logging
 from pathlib import Path
 
-from django.utils.html import escape
 import commonmark
 
 
@@ -39,7 +36,8 @@ def version(path):
 
 def news(path, version):
     readme = _safe_read(Path(path) / 'CHANGES.md')
-    match = re.search(r'^## Version (%s).*?\n+' % re.escape(version), readme, re.M)
+    pattern = rf'^## Version ({re.escape(version)}).*?\n+'
+    match = re.search(pattern, readme, re.M)
     if not match:
         return ''
     header = readme[match.start() + 3:match.end()]
@@ -67,7 +65,11 @@ def check_cdns(cdn_templates, version, cache=None):
     for title, script_url, style_url in cdn_templates:
         script_url = script_url % version
         style_url = style_url % version
-        script_url = cache.get(script_url) if cache else check_cdn(script_url, version)
+        script_url = (
+            cache.get(script_url)
+            if cache else
+            check_cdn(script_url, version)
+        )
         if script_url:
             yield title, script_url, style_url
 
@@ -89,7 +91,9 @@ def parse_header(filename):
         headers = match.group(1).split('\n')
         headers = dict(h.strip().split(': ', 1) for h in headers if ': ' in h)
         for key in ['Requires', 'Category']:
-            headers[key] = [v.strip() for v in headers.get(key, '').split(',') if v]
+            headers[key] = [
+                v.strip() for v in headers.get(key, '').split(',') if v
+            ]
     except Exception as e:
         log.error('Error parsing header of %s: %s' % (filename, e))
         raise
@@ -123,13 +127,18 @@ def buildzip(src_path, cache_path, filenames):
     styles_path = src_path / 'src' / 'styles'
     for filename in styles_path.glob('*'):
         zip.write(filename, f'styles/{filename.name}')
-    languages = list(_dedupe(_with_dependents(src_path / 'src' / 'languages', filenames)))
-    filenames = [cache_path / 'languages' / l.replace('.js', '.min.js') for l in languages]
+    languages = _with_dependents(src_path / 'src' / 'languages', filenames)
+    languages = list(_dedupe(languages))
+    filenames = [
+        cache_path / 'languages' / language.replace('.js', '.min.js')
+        for language in languages
+    ]
     hljs = ''.join(
         f.open().read()
         for f in [cache_path / 'highlight.min.js'] + filenames
     )
-    info = zipfile.ZipInfo('highlight.pack.js', date_time=datetime.now().timetuple()[:6])
+    now = datetime.now().timetuple()[:6]
+    info = zipfile.ZipInfo('highlight.pack.js', date_time=now)
     info.external_attr = 0o644 << 16
     zip.writestr(info, hljs)
     zip.close()
@@ -148,5 +157,3 @@ def listlanguages(src_path):
     commons = [(h, l) for h, l in languages if 'common' in h['Category']]
     others = [(h, l) for h, l in languages if 'common' not in h['Category']]
     return commons, others
-
-
