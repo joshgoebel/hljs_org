@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.html import mark_safe
-import markdown
+import commonmark
 
 
 class News(models.Model):
@@ -17,7 +17,7 @@ class News(models.Model):
         return self.text.split('\n', 1)[0]
 
     def html(self):
-        return mark_safe(markdown.markdown(self.text))
+        return mark_safe(commonmark.commonmark(self.text))
 
 class Update(models.Model):
     version = models.CharField(max_length=255)

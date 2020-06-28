@@ -9,7 +9,7 @@ import logging
 from pathlib import Path
 
 from django.utils.html import escape
-import markdown
+import commonmark
 
 
 log = logging.getLogger('hljs_org.lib')
@@ -130,9 +130,10 @@ def listlanguages(src_path):
     others = [(h, l) for h, l in languages if 'common' not in h['Category']]
     return commons, others
 
+
 def readme(path):
     try:
-        readme = open(os.path.join(path, 'README.md'), encoding='utf-8').read()
+        readme = (Path(path) / 'README.md').open().read()
     except FileNotFoundError:
         return ''
     try:
@@ -140,10 +141,4 @@ def readme(path):
     except IndexError:
         pass
 
-    def replace_code(match):
-        code = escape(match.group(2))
-        language = match.group(1)
-        return '<pre><code class="%s">%s</code></pre>' % (language, code)
-
-    readme = re.sub(r'^```(\w+)\n(.*?)\n```\n', replace_code, readme, flags=re.M | re.S)
-    return markdown.markdown(readme, safe_mode=False)
+    return commonmark.commonmark(readme)
