@@ -19,7 +19,7 @@ USE_I18N = False
 USE_L10N = False
 USE_TZ = True
 
-SECRET_KEY = '7w$8*l#lhd_dv9dxv0wv)^4*(z)k(zwiat$mz*_5le_u^zm$v4'
+SECRET_KEY = env('SECRET_KEY')
 
 DATABASES = {
     'default': {
