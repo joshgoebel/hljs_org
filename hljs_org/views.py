@@ -1,4 +1,3 @@
-import os
 import logging
 import random
 import json
@@ -19,6 +18,7 @@ from hljs_org import lib, models
 downloadlog = logging.getLogger('hljs_org.download')
 releaselog = logging.getLogger('hljs_orgi.release')
 
+
 def curnext(items, index):
     if index is None:
         index = random.randrange(0, len(items))
@@ -29,8 +29,12 @@ def curnext(items, index):
         raise http.Http404
     return index, (index + 1) % len(items)
 
+
 def index(request):
-    snippets = [lib.snippet(settings.HLJS_SOURCE, l) for l in settings.HLJS_SNIPPETS]
+    snippets = [
+        lib.snippet(settings.HLJS_SOURCE, lang)
+        for lang in settings.HLJS_SNIPPETS
+    ]
     snippet_current, snippet_next = curnext(snippets, request.GET.get('snippet'))
     styles = settings.HLJS_CODESTYLES
     style_current, style_next = curnext(styles, request.GET.get('style'))
@@ -48,10 +52,15 @@ def index(request):
         'news': models.News.objects.order_by('-created')[:10],
     })
 
+
 def download(request):
     if request.method == 'POST':
         languages = set(request.POST.keys())
-        content, languages = lib.buildzip(settings.HLJS_SOURCE, settings.HLJS_CACHE, languages)
+        content, languages = lib.buildzip(
+            settings.HLJS_SOURCE,
+            settings.HLJS_CACHE,
+            languages
+        )
         downloadlog.info(' '.join(sorted(languages)))
         response = http.HttpResponse(content, content_type='application/zip')
         response['Content-Disposition'] = 'attachment; filename=highlight.zip'
@@ -66,17 +75,19 @@ def download(request):
             'others': others,
         })
 
+
 def usage(request):
     return render(request, 'usage.html', {
         'text': mark_safe(lib.readme(settings.HLJS_SOURCE)),
     })
+
 
 @csrf_exempt
 def release(request):
     if request.method == 'POST':
         data = json.load(request)
         event = request.META.get('HTTP_X_GITHUB_EVENT', 'event')
-        releaselog.info('Github event: %s' % event)
+        releaselog.info(f'Github event: {event}')
         if event == 'push':
             match = re.match(r'refs/tags/(.*)', data['ref'])
             version = match.group(1) if match else '0'
@@ -86,16 +97,20 @@ def release(request):
             version = '0'
         version = parse_version(version)
         current_version = parse_version(lib.version(settings.HLJS_SOURCE))
-        releaselog.info('Parsed version: %s, current version: %s' % (version, current_version))
+        releaselog.info(
+            f'Parsed version: {version}, '
+            f'current version: {current_version}'
+        )
         if not version.is_prerelease and version >= current_version:
-            result = 'Started update to version %s. Watch progress at %s.\n' % (
-                version,
-                request.build_absolute_uri(resolve_url(release)),
+            url = request.build_absolute_uri(resolve_url(release))
+            result = (
+                f'Started update to version {version}. '
+                f'Watch progress at {url}.\n'
             )
             status = 202
             subprocess.Popen(['venv/bin/python', 'manage.py', 'updatehljs', str(version)])
         else:
-            result = 'No update started for version %s.\n' % version
+            result = f'No update started for version {version}.\n'
             status = 200
         return http.HttpResponse(result, status=status, content_type='text/plain')
     else:
