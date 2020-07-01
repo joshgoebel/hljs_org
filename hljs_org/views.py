@@ -74,7 +74,7 @@ def usage(request):
 @csrf_exempt
 def release(request):
     if request.method == 'POST':
-        data = json.loads(request.read().decode('utf-8'))
+        data = json.load(request)
         event = request.META.get('HTTP_X_GITHUB_EVENT', 'event')
         releaselog.info('Github event: %s' % event)
         if event == 'push':
