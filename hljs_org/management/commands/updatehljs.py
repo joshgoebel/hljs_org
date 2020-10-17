@@ -5,6 +5,7 @@ import re
 import logging
 import shutil
 import json
+import importlib
 
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
@@ -16,6 +17,13 @@ from hljs_org import lib, models
 
 log = logging.getLogger('hljs_org.updatehljs')
 
+
+def import_file(filename):
+    name, _ = os.path.splitext(os.path.basename(filename))
+    spec = importlib.util.spec_from_file_location(name, filename)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 def run(args):
     output = subprocess.check_output(args, stderr=subprocess.STDOUT)
@@ -61,9 +69,9 @@ class Command(BaseCommand):
         short_version = version if len(version_numbers) <= 2 else '.'.join(version_numbers[:2])
         assert lib.version(settings.HLJS_SOURCE) == version
         assert re.search(r'"version"\s*:\s*"%s"' % node_version, open('package.json', encoding='utf-8').read()) is not None
-        conf = open('docs/conf.py', encoding='utf-8').read()
-        assert re.search('version = \'%s\'' % short_version, conf) is not None
-        assert re.search('release = \'%s\'' % version, conf) is not None
+        conf = import_file('docs/conf.py')
+        assert conf.version == short_version
+        assert conf.release == version
 
         log.info('Reinstalling node dependencies...')
         run(['rm', '-rf', 'node_modules'])
