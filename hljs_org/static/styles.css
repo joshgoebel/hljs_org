@@ -1,15 +1,16 @@
 @import url(//fonts.googleapis.com/css?family=PT+Sans:400,700,400italic);
 
 body {
-  color: #F0F0F0;
+  color: #f0f0f0;
   background: #600;
   margin: 0 auto;
   width: 52em;
+  padding: 0 1em;
   font-family: PT Sans, DejaVu Sans, Arial, sans;
 }
 
 a {
-  color: white;
+  color: #f0f0f0;
 }
 
 h2 {
@@ -30,8 +31,12 @@ ul.ui li {
   margin: 0.25em 0; padding: 0;
 }
 
+code {
+  font-family: Consolas, Monaco, monospace;
+}
+
 pre code {
-  font: normal 10pt Consolas, Monaco, monospace;
+  font-size: 10pt;
 }
 
 #header {
@@ -88,19 +93,29 @@ pre code {
   margin-bottom: 3em;
 }
 
-#download a {
-  display: block; width: 12em;
-  margin: 0 auto;  padding: 1em;
-  text-align: center;
+.download {
   background: linear-gradient(to bottom, #444, #333);
   border-color: #555 #222 #222 #555;
-  border-style: solid;
-  border-width: 0.1em;
-  border-radius: 0.2em;
-  text-decoration: none;
-  font-weight: bold;
+  border-radius: 4px;
+  border-width: 1px;
   font-size: 120%;
+  font-weight: bold;
   text-shadow: black 1px 1px 2px;
+}
+
+a.download {
+  border-style: solid;
+  display: block;
+  margin: 0 auto;
+  padding: 1em;
+  text-align: center;
+  text-decoration: none;
+  width: 12em;
+}
+
+button.download {
+  color: #f0f0f0;
+  padding: 0.5em 1em;
 }
 
 #usage {
