@@ -84,24 +84,7 @@ class Command(BaseCommand):
             shutil.rmtree(settings.HLJS_CACHE)
         shutil.move('build', settings.HLJS_CACHE)
 
-        log.info('Updating CDN repo at %s' % settings.HLJS_CDN_SOURCE)
-        run(['nodejs', 'tools/build.js', '--target', 'cdn', ':common'])
-        os.chdir(settings.HLJS_CDN_SOURCE)
-        run(['git', 'pull', '-f'])
-        lines = run(['git', '--git-dir', os.path.join(settings.HLJS_CDN_SOURCE, '.git'), 'tag'])
-        build_dir = os.path.join(settings.HLJS_CDN_SOURCE, 'build')
-        if version in lines:
-            log.info('Tag %s already exists in the local CDN repo' % version)
-        else:
-            if os.path.exists(build_dir):
-                shutil.rmtree(build_dir)
-            shutil.move(os.path.join(settings.HLJS_SOURCE, 'build'), build_dir)
-            run(['git', 'add', '.'])
-            run(['git', 'commit', '-m', 'Update to version %s' % version])
-            run(['git', 'tag', version])
-        run(['git', 'push'])
-        run(['git', 'push', '--tags'])
-        npm_publish(build_dir)
+        # pretty sure we don't need, but can't hurt
         os.chdir(settings.HLJS_SOURCE)
 
         call_command('publishtest')
@@ -114,10 +97,6 @@ class Command(BaseCommand):
             },
             for_version=version,
         )
-
-        log.info('Building full node build...')
-        run(['nodejs', 'tools/build.js', '--target', 'node'])
-        npm_publish('build')
 
         log.info('Update to version %s completed.' % version)
 
