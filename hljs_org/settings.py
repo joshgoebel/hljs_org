@@ -104,7 +104,6 @@ import logging.config
 logging.config.dictConfig(LOGGING)
 
 HLJS_SOURCE = env('HLJS_SOURCE', '../highlight.js')
-HLJS_CDN_SOURCE = env('HLJS_CDN_SOURCE', '../cdn-release')
 HLJS_CACHE = env('HLJS_CACHE', '../cache')
 
 STATIC_URL = '/static/'

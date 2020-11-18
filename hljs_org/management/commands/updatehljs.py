@@ -30,20 +30,6 @@ def run(args):
     return output.decode().splitlines()
 
 
-def npm_publish(path):
-    log.info('Looking to publishing %s to npm...' % path)
-    package = json.load(open(os.path.join(path, 'package.json')))
-    lines = run(['npm', 'view', package['name'], 'version'])
-    lines = [l for l in lines if l and not l.startswith('npm')]
-    published_version = lines[0]
-    log.info('Found published %s=%s' % (package['name'], published_version))
-    if published_version != package['version']:
-        log.info('Publishing version %s to npm...' % package['version'])
-        run(['npm', 'publish', path])
-    else:
-        log.info('Not publishing version %s over the same' % package['version'])
-
-
 class Command(BaseCommand):
     help = 'Updates the site for a new version of highlight.js library'
     requires_system_checks = False
@@ -83,9 +69,6 @@ class Command(BaseCommand):
         if os.path.exists(settings.HLJS_CACHE):
             shutil.rmtree(settings.HLJS_CACHE)
         shutil.move('build', settings.HLJS_CACHE)
-
-        # pretty sure we don't need, but can't hurt
-        os.chdir(settings.HLJS_SOURCE)
 
         call_command('publishtest')
         call_command('collectstatic', interactive=False)
