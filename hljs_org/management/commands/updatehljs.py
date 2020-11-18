@@ -64,7 +64,7 @@ class Command(BaseCommand):
         run(['npm', 'install'])
 
         log.info('Building CDN build to populate cache...')
-        run(['nodejs', 'tools/build.js', '--target', 'cdn'])
+        run(['node', 'tools/build.js', '--target', 'cdn'])
         log.info('Moving CDN build over to %s' % settings.HLJS_CACHE)
         if os.path.exists(settings.HLJS_CACHE):
             shutil.rmtree(settings.HLJS_CACHE)
