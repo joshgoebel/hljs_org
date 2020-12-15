@@ -172,4 +172,9 @@ HLJS_CDNS = [
         '//cdn.jsdelivr.net/gh/highlightjs/cdn-release@%s/build/highlight.min.js',
         '//cdn.jsdelivr.net/gh/highlightjs/cdn-release@%s/build/styles/default.min.css',
     ),
+    (
+        'unpkg',
+        '//unpkg.com/@highlightjs/cdn-assets@%s/highlight.min.js',
+        '//unpkg.com/@highlightjs/cdn-assets@%s/styles/default.min.css',
+    ),
 ]
