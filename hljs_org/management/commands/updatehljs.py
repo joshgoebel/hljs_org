@@ -60,8 +60,7 @@ class Command(BaseCommand):
         assert conf.release == version
 
         log.info('Reinstalling node dependencies...')
-        run(['rm', '-rf', 'node_modules'])
-        run(['npm', 'install'])
+        run(['npm', 'ci'])
 
         log.info('Building CDN build to populate cache...')
         run(['node', 'tools/build.js', '--target', 'cdn'])
