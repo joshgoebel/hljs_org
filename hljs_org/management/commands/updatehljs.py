@@ -44,7 +44,7 @@ class Command(BaseCommand):
         '''
         os.chdir(settings.HLJS_SOURCE)
         log.info('Checking out version %s...' % version)
-        run(['git', 'checkout', 'master'])
+        run(['git', 'checkout', 'main'])
         run(['git', 'pull', '-f'])
         run(['git', 'pull', '-f', '--tags'])
         run(['git', 'checkout', version])
