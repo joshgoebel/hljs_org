@@ -122,7 +122,7 @@ def buildzip(src_path, cache_path, filenames):
     cache_path = Path(cache_path)
     result = BytesIO()
     zip = zipfile.ZipFile(result, 'w')
-    for filename in ['README.md', 'README.ru.md', 'CHANGES.md', 'LICENSE']:
+    for filename in ['README.md', 'CHANGES.md', 'LICENSE']:
         zip.write(src_path / filename, filename)
     styles_path = src_path / 'src' / 'styles'
     for filename in styles_path.glob('*'):
