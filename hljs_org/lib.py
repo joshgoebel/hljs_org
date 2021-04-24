@@ -138,7 +138,7 @@ def buildzip(src_path, cache_path, filenames):
         for f in [cache_path / 'highlight.min.js'] + filenames
     )
     now = datetime.now().timetuple()[:6]
-    info = zipfile.ZipInfo('highlight.pack.js', date_time=now)
+    info = zipfile.ZipInfo('highlight.min.js', date_time=now)
     info.external_attr = 0o644 << 16
     zip.writestr(info, hljs)
     zip.close()
