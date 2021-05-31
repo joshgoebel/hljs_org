@@ -49,6 +49,7 @@ The site is a pretty standard Django application. Some interesting parts:
 Installation:
 
 ```sh
+brew install libmemcached
 python3 -m venv venv
 . venv/bin/activate
 pip install -r requirements.txt

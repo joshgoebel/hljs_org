@@ -22,7 +22,7 @@ def _safe_read(path):
 def readme(path):
     readme = _safe_read(Path(path) / 'README.md')
     try:
-        readme = readme[readme.find('## Getting Started'):]
+        readme = readme[readme.find('## Basic Usage'):]
     except IndexError:
         pass
     return commonmark.commonmark(readme)
